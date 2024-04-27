@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "montserrat-font";
+  src: url("../assets/fonts/Montserrat.ttf");
+}
+@font-face {
+  font-family: "ubuntu-font";
+  src: url("../assets/fonts/Ubuntu.ttf");
+}
+
+.montserrat-font {
+  font-family: "montserrat-font", sans-serif !important;
+}
+
+.ubuntu-font {
+  font-family: "ubuntu-font", sans-serif !important;
+}

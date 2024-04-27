@@ -1,0 +1,34 @@
+header {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.ant-carousel{
+  background-color: gainsboro !important;
+}
+
+.ant-carousel .slick-dots li.slick-active button{
+  background-color: black !important;
+}
+
+.ant-carousel .slick-dots li button{
+  background-color: rgb(114, 113, 113) !important;
+}
+
+.category_item .category_img_div {
+  min-height: 180px;
+  max-height: 180px;
+  min-width: 180px;
+  max-width: 180px;
+}
+
+.category_item:hover .category_img_div {
+  box-shadow: 0 0 10px 0 black;
+}
+
+.category_item:hover > h6 {
+  color: rgb(0, 0, 0);
+}
+
+.hide-scroll-bar::-webkit-scrollbar{
+  display: none !important;
+}
