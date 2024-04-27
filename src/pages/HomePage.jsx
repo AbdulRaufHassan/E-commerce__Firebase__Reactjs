@@ -8,6 +8,7 @@ import CAROUSEL_IMAGE2 from "../assets/images/carousel_img_2.webp";
 import CAROUSEL_IMAGE3 from "../assets/images/carousel_img_3.png";
 import Categories from "../components/Categories";
 import LatestCollection from "../components/LatestCollection";
+import Footer from "../components/Footer";
 
 function HomePage() {
   return (
@@ -30,6 +31,7 @@ function HomePage() {
         </Carousel>
         <Categories />
         <LatestCollection />
+        <Footer />
       </main>
     </div>
   );

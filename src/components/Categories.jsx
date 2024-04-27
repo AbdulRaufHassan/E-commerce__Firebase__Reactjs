@@ -18,68 +18,60 @@ function Categories() {
       </div>
       <div className="h-auto w-full overflow-x-auto hide-scroll-bar">
         <ul className="min-w-fit max-w-fit mx-auto h-auto box-border pt-14 flex">
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={TEA_SHIRT_IMG} className="h-32" />
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
             <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={PANT_IMG} className="h-32" />
-            </div>
-            <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Jeans
-            </h6>
-          </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={WATCH_IMG} className="h-32" />
-            </div>
-            <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Watches
-            </h6>
-          </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={SHIRT_IMG} className="h-32" />
-            </div>
-            <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Shirts
-            </h6>
-          </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={TEA_SHIRT_IMG} className="h-32" />
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
             <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={PANT_IMG} className="h-32" />
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
             <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Jeans
+              Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={WATCH_IMG} className="h-32" />
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
             <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Watches
+              Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer category_item">
-            <div className="rounded-full bg-gray-300 mx-4 category_img_div flex justify-center items-center">
-              <img src={SHIRT_IMG} className="h-32" />
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
             <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
-              Shirts
+              Tea Shirts
+            </h6>
+          </li>
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
+            </div>
+            <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
+              Tea Shirts
+            </h6>
+          </li>
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+            <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+              <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
+            </div>
+            <h6 className="text-teal-500 ubuntu-font font-medium text-2xl mt-3">
+              Tea Shirts
             </h6>
           </li>
         </ul>
