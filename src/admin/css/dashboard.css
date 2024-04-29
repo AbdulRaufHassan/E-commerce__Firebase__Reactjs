@@ -1,0 +1,93 @@
+@font-face {
+  font-family: "montserrat-font";
+  src: url("../assets/fonts/Montserrat.ttf");
+}
+@font-face {
+  font-family: "ubuntu-font";
+  src: url("../assets/fonts/Ubuntu.ttf");
+}
+
+.montserrat-font {
+  font-family: "montserrat-font", sans-serif !important;
+}
+
+.ubuntu-font {
+  font-family: "ubuntu-font", sans-serif !important;
+}
+
+/* **************************** table styling ********************************** */
+
+.ant-tabs-nav .ant-tabs-nav-list {
+  width: 100% !important;
+}
+
+.ant-tabs .ant-tabs-tab {
+  display: flex !important;
+  flex: 1 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0px !important;
+}
+
+.ant-tabs .ant-tabs-tab {
+  border-left: 1px solid rgba(220, 220, 220, 0.9) !important;
+}
+
+.ant-tabs .ant-tabs-tab-btn {
+  font-size: larger !important;
+  font-family: "montserrat-font", sans-serif !important;
+  color: rgb(156 163 175) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.ant-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: black !important;
+}
+
+.ant-tabs-nav .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
+  background-color: black !important;
+}
+
+.ant-tabs-top > .ant-tabs-nav::before {
+  border-bottom: 2px solid #dcdcdc !important;
+}
+
+.ant-tabs-top > .ant-tabs-nav {
+  margin: 0px !important;
+}
+
+.ant-table-thead .ant-table-cell{
+  background-color:  rgb(229 231 235) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: white !important;
+}
+
+/* **************************** Modal styling ********************************** */
+
+.ant-modal .ant-modal-content {
+  background-color: whitesmoke !important;
+}
+
+.ant-modal .ant-modal-title {
+  font-size: x-large !important;
+  color: rgb(20 184 166) !important;
+  background-color: whitesmoke !important;
+  font-family: "ubuntu-font", sans-serif !important;
+}
+
+.ant-select-single {
+  flex: 1 !important;
+  margin-left: 20px !important;
+  height: 50px !important;
+}
+
+.ant-select-selector {
+  border: 2px solid rgb(156 163 175) !important;
+  box-shadow: none !important;
+}
+
+.ant-select-open .ant-select-selector {
+  border-color: rgb(20 184 166) !important;
+}

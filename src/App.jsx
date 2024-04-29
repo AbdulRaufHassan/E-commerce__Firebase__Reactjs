@@ -1,23 +1,26 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import "./css/App.css";
-import HomePage from "./pages/HomePage.jsx";
-import SigninPage from "./pages/SigninPage.jsx";
+import "./users/css/App.css";
+import HomePage from "./users/pages/HomePage.jsx";
+import SigninPage from "./SigninPage.jsx";
+import AdminDashboard from "./admin/pages/AdminDashboard.jsx";
 import { useEffect, useState } from "react";
 import { auth, db, doc, getDoc, onAuthStateChanged } from "./config";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { adminEmail } from "./constants/index.js";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [userAuthenticated, setUserAuthenticated] = useState(false);
+  const [userAuthenticated, setUserAuthenticated] = useState(null);
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log(user.email);
         const docRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(docRef);
-        userDoc.exists() && setUserAuthenticated(true);
+        userDoc.exists() && setUserAuthenticated(user);
       } else {
-        setUserAuthenticated(false);
+        setUserAuthenticated(null);
       }
       setLoading(false);
     });
@@ -42,12 +45,36 @@ function App() {
         <Route
           path="/"
           element={
-            !userAuthenticated ? <SigninPage /> : <Navigate to="/Home" />
+            !userAuthenticated ? (
+              <SigninPage />
+            ) : userAuthenticated && userAuthenticated.email === adminEmail ? (
+              <Navigate to="/AdminDashboard" />
+            ) : (
+              <Navigate to="/Home" />
+            )
+          }
+        />
+        <Route
+          path="/AdminDashboard"
+          element={
+            userAuthenticated && userAuthenticated.email === adminEmail ? (
+              <AdminDashboard />
+            ) : (
+              <Navigate to="/" />
+            )
           }
         />
         <Route
           path="/Home"
-          element={userAuthenticated ? <HomePage /> : <Navigate to="/" />}
+          element={
+            userAuthenticated && userAuthenticated.email != adminEmail ? (
+              <HomePage />
+            ) : userAuthenticated && userAuthenticated.email === adminEmail ? (
+              <Navigate to="/AdminDashboard" />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
       </Routes>
     </BrowserRouter>

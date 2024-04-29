@@ -10,7 +10,7 @@ import LOGO from "../assets/images/logo.png";
 
 function Header() {
   return (
-    <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-5 py-1">
+    <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-5 py-1 header_boxShadow">
       <div className="flex items-center w-full h-auto">
         <button className="h-auto w-auto xs:order-1">
           <img src={LOGO} className="h-20" />

@@ -1,28 +1,41 @@
 import React from "react";
-import "../css/App.css";
-import LOGO from "../assets/images/logo.png";
-import GOOGLE_ICON from "../assets/images/google_icon.png";
+import "./users/css/App.css";
+import LOGO from "./users/assets/images/logo.png";
+import GOOGLE_ICON from "./users/assets/images/google_icon.png";
 import {
   GoogleAuthProvider,
   auth,
   db,
   doc,
+  serverTimestamp,
   setDoc,
   signInWithPopup,
-} from "../config";
+} from "./config";
+import { adminEmail } from "./constants";
 
 function SigninPage() {
   const googleSignin = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        await setDoc(doc(db, "users", result.user.uid), {
-          name: result.user.displayName,
-          uid: result.user.uid,
-          emailAddress: result.user.email,
-          cartItems: [],
-          favouriteItems: [],
-        });
+        if (result.user.uid != adminEmail) {
+          await setDoc(doc(db, "users", result.user.uid), {
+            name: result.user.displayName,
+            uid: result.user.uid,
+            emailAddress: result.user.email,
+            joinDate: serverTimestamp(),
+            cartItems: [],
+            favouriteItems: [],
+          });
+        } else {
+          await setDoc(doc(db, "users", result.user.uid), {
+            name: result.user.displayName,
+            uid: result.user.uid,
+            emailAddress: result.user.email,
+            joinDate: serverTimestamp(),
+            role: "Admin",
+          });
+        }
       })
       .catch((error) => {
         console.log(error);

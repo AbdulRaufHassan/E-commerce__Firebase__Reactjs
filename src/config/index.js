@@ -5,7 +5,19 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, setDoc, getDoc , doc } from "firebase/firestore";
+import {
+  getFirestore,
+  setDoc,
+  getDoc,
+  doc,
+  addDoc,
+  collection,
+  FieldValue,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -30,4 +42,11 @@ export {
   setDoc,
   getDoc,
   doc,
+  addDoc,
+  collection,
+  FieldValue,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp
 };

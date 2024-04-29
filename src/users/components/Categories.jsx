@@ -17,8 +17,8 @@ function Categories() {
         <div className="flex-1 h-[2px] bg-gray-400"></div>
       </div>
       <div className="h-auto w-full overflow-x-auto hide-scroll-bar">
-        <ul className="min-w-fit max-w-fit mx-auto h-auto box-border pt-14 flex">
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+        <ul className="min-w-fit max-w-fit mx-auto h-auto box-border pt-14 flex categories">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -26,7 +26,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -34,7 +34,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -42,7 +42,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -50,7 +50,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -58,7 +58,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
@@ -66,7 +66,7 @@ function Categories() {
               Tea Shirts
             </h6>
           </li>
-          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category_item">
+          <li className="flex flex-col items-center w-auto h-auto cursor-pointer mx-4 category">
             <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
               <img src={TEA_SHIRT_IMG} className="h-32 bg-cover" />
             </div>
