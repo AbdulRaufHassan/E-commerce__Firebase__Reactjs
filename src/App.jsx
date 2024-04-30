@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log(user.email);
         const docRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(docRef);
         userDoc.exists() && setUserAuthenticated(user);

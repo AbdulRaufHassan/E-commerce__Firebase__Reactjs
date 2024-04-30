@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/App.css";
 import "../css/homePage.css";
 import TEA_SHIRT_IMG from "../assets/images/teaShirt_img.png";
-import SHIRT_IMG from "../assets/images/shirt_img.png";
-import PANT_IMG from "../assets/images/pant_img.png";
-import WATCH_IMG from "../assets/images/watch_img.png";
 import { HeartOutlined } from "@ant-design/icons";
+import { allProductsContext } from "../context/allProductsContext";
 
 function TopCollection() {
+  const allProducts = useContext(allProductsContext);
+
   return (
     <div className="w-full h-auto box-border mb-6">
       <div className="w-full h-auto flex items-center px-2 box-border">
         <div className="flex-1 h-[2px] bg-gray-400"></div>
-        <h1 className="font-bold text-2xl montserrat-font mx-5 uppercase">
+        <h1 className="font-bold text-2xl ubuntu-font mx-5 uppercase">
           Top Collection
         </h1>
         <div className="flex-1 h-[2px] bg-gray-400"></div>
@@ -39,7 +39,6 @@ function TopCollection() {
             </button>
           </div>
         </li>
-       
       </ul>
     </div>
   );

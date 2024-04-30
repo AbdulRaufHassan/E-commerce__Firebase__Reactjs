@@ -16,8 +16,12 @@ import {
   query,
   where,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  getDocs,
+  updateDoc,
+  arrayUnion
 } from "firebase/firestore";
+import { getStorage, uploadBytes, getDownloadURL,ref } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -32,6 +36,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 export {
   auth,
@@ -43,10 +48,16 @@ export {
   getDoc,
   doc,
   addDoc,
+  getDocs,
   collection,
-  FieldValue,
   query,
   where,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  storage,
+  uploadBytes,
+  getDownloadURL,
+  ref,
+  updateDoc,
+  arrayUnion
 };

@@ -91,3 +91,7 @@
 .ant-select-open .ant-select-selector {
   border-color: rgb(20 184 166) !important;
 }
+
+button:disabled{
+  cursor: not-allowed !important;
+}
