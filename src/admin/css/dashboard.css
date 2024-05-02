@@ -46,6 +46,7 @@
 
 .ant-tabs-nav .ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
   background-color: black !important;
+  height: 3px !important;
 }
 
 .ant-tabs-top > .ant-tabs-nav::before {
@@ -56,12 +57,24 @@
   margin: 0px !important;
 }
 
-.ant-table-thead .ant-table-cell{
-  background-color:  rgb(229 231 235) !important;
+.ant-table-thead .ant-table-cell {
+  background-color: rgb(229 231 235) !important;
 }
 
 .ant-table-tbody > tr:hover > td {
   background-color: white !important;
+}
+
+.ant-table {
+  border: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-cell {
+  border-right: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-cell:last-child {
+  border-right: none !important;
 }
 
 /* **************************** Modal styling ********************************** */
@@ -92,6 +105,6 @@
   border-color: rgb(20 184 166) !important;
 }
 
-button:disabled{
+button:disabled {
   cursor: not-allowed !important;
 }

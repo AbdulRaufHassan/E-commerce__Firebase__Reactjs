@@ -18,7 +18,7 @@ function SigninPage() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        if (result.user.uid != adminEmail) {
+        if (result.user.email != adminEmail) {
           await setDoc(doc(db, "users", result.user.uid), {
             name: result.user.displayName,
             uid: result.user.uid,

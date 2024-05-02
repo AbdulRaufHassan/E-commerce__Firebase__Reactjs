@@ -3,10 +3,9 @@ import "../css/dashboard.css";
 import { AppstoreAddOutlined, LogoutOutlined } from "@ant-design/icons";
 import LOGO from "../assets/images/logo.png";
 import ADD_PRODUCT_ICON from "../assets/images/add_product_icon.png";
-import AddProductModal from "./AddProductModal";
 import AddCategoryModal from "./AddCategoryModal";
-function Header() {
-  const [openModal, setOpenModal] = useState(false);
+import Add_UpdateProductModal from "./Add_UpdateProductModal";
+function Header({ openModal, setOpenModal }) {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   return (
     <>
@@ -16,7 +15,7 @@ function Header() {
             <img src={LOGO} className="h-20" />
           </button>
           <h1 className="text-white montserrat-font text-2xl font-semibold m-0">
-            Welcome Admin
+            Admin Dashboard
           </h1>
           <div className="w-auto flex items-center montserrat-font xs:order-2 lg:order-3">
             <button
@@ -41,7 +40,11 @@ function Header() {
         </div>
       </header>
       {openModal && (
-        <AddProductModal openModal={openModal} setOpenModal={setOpenModal} />
+        <Add_UpdateProductModal
+          openModal={openModal}
+          modalType="Add"
+          setOpenModal={setOpenModal}
+        />
       )}
       {openCategoryModal && (
         <AddCategoryModal

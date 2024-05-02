@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/dashboard.css";
 import { Modal, Select, Spin } from "antd";
 import {
@@ -18,8 +18,10 @@ import {
 } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
 import { topCollectionDocId } from "../../constants";
+import { allCategoriesContext } from "../../context/allCategoriesContext";
 
-function AddProductModal({ openModal, setOpenModal }) {
+function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
+  const getAllCategories = useContext(allCategoriesContext);
   const [productNameInput, setProductNameInput] = useState("");
   const [productDisInput, setProductDisInput] = useState("");
   const [productPriceInput, setProductPriceInput] = useState("");
@@ -35,15 +37,6 @@ function AddProductModal({ openModal, setOpenModal }) {
     setProductInputFile(null);
     setLoading(false);
     setOpenModal(false);
-  };
-
-  const getAllCategories = async () => {
-    const querySnapshot = await getDocs(collection(db, "categories"));
-    let tempArr = [];
-    querySnapshot.forEach((doc) => {
-      tempArr.push(doc.data());
-    });
-    setCategories(tempArr);
   };
 
   const addProduct = async (e) => {
@@ -96,12 +89,12 @@ function AddProductModal({ openModal, setOpenModal }) {
   ];
 
   useEffect(() => {
-    getAllCategories();
-  }, []);
+    setCategories(getAllCategories);
+  }, [getAllCategories]);
 
   return (
     <Modal
-      title="Add Product"
+      title={modalType == "Add" ? "Add Product" : "Update Product"}
       open={openModal}
       centered
       maskClosable={false}
@@ -212,4 +205,4 @@ function AddProductModal({ openModal, setOpenModal }) {
   );
 }
 
-export default AddProductModal;
+export default Add_UpdateProductModal;

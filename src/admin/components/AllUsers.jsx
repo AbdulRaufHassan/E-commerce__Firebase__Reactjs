@@ -1,6 +1,6 @@
 import { Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { collection, db, onSnapshot, query, where } from "../../config";
+import { auth, collection, db, onSnapshot, query, where } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
 import { adminEmail } from "../../constants";
 import "../css/dashboard.css";
@@ -12,7 +12,7 @@ function AllUsers() {
     setLoading(true);
     const q = query(
       collection(db, "users"),
-      where("emailAddress", "!=", adminEmail)
+      where("uid", "!=", auth.currentUser.uid)
     );
     onSnapshot(q, (querySnapshot) => {
       const users = [];
