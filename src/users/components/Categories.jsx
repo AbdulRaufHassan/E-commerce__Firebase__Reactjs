@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { allCategoriesContext } from "../../context/allCategoriesContext";
 
 function Categories() {
-  const categories = useContext(allCategoriesContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const navigate = useNavigate();
 
   return (
     <>
-      {categories.length > 0 && (
+      {allCategories.length > 0 && (
         <div className="w-full h-auto box-border py-16">
           <div className="w-full h-auto flex items-center px-2 box-border">
             <div className="flex-1 h-[2px] bg-gray-400"></div>
@@ -21,7 +21,7 @@ function Categories() {
           </div>
           <div className="h-auto w-full overflow-x-auto hide-scroll-bar">
             <ul className="min-w-fit max-w-fit mx-auto h-auto box-border pt-14 flex categories">
-              {categories.map(
+              {allCategories.map(
                 (category) =>
                   category.products.length > 0 && (
                     <li

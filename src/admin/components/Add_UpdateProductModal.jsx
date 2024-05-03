@@ -21,7 +21,7 @@ import { topCollectionDocId } from "../../constants";
 import { allCategoriesContext } from "../../context/allCategoriesContext";
 
 function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
-  const getAllCategories = useContext(allCategoriesContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const [productNameInput, setProductNameInput] = useState("");
   const [productDisInput, setProductDisInput] = useState("");
   const [productPriceInput, setProductPriceInput] = useState("");
@@ -66,6 +66,8 @@ function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
         const topCollectionSnapshot = await getDoc(topCollectionRef);
         if (!topCollectionSnapshot.exists()) {
           await setDoc(topCollectionRef, {
+            name: "Top Collection",
+            categoryId: topCollectionDocId,
             products: [productsRef.id],
           });
         } else {
@@ -89,8 +91,8 @@ function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
   ];
 
   useEffect(() => {
-    setCategories(getAllCategories);
-  }, [getAllCategories]);
+    setCategories(allCategories);
+  }, [allCategories]);
 
   return (
     <Modal

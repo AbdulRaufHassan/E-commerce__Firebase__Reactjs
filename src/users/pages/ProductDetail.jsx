@@ -6,10 +6,12 @@ import { HeartOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import Header from "../components/Header";
 import { allProductsContext } from "../../context/allProductsContext";
+import { allCategoriesContext } from "../../context/allCategoriesContext";
 
 function ProductDetail() {
   const { productId } = useParams();
   const allProducts = useContext(allProductsContext);
+  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -37,17 +39,32 @@ function ProductDetail() {
       ) : (
         <div className="min-h-screen max-h-fit w-full flex justify-center items-center productDetail_mainDiv">
           <Header />
-          <div className="flex product_detail_container mt-[170px] sm:mt-[200px] md:mt-[210px] lg:mt-[88px] mb-5">
-            <div className="bg-gray-300 product_img_div flex items-center justify-center">
-              <img src={product.imgUrl} className="max-w-[80%] max-h-[80%]" />
+          <div className="flex product_detail_container mt-[170px] sm:mt-[200px] md:mt-[210px] lg:mt-[150px] mb-5">
+            <div className="bg-gray-300 product_img_div flex items-center justify-center overflow-hidden">
+              <img
+                src={product.imgUrl}
+                className="max-w-full max-h-full bg-cover"
+              />
             </div>
             <div className="flex flex-col product_info_div ml-9">
               <h1 className="text-4xl montserrat-font font-semibold text-black">
                 {product.name}
               </h1>
-              <h6 className="text-2xl ubunti-font font-bold text-gray-600 mt-4 mb-3">
-                RS {product.price}
-              </h6>
+              <div className="flex justify-between items-center mt-4 mb-3">
+                <h6 className="text-2xl ubunti-font font-bold text-gray-600">
+                  RS {product.price}
+                </h6>
+                <h6 className=" montserrat-font">
+                  <span className="text-gray-400 font-medium">Category: </span>
+                  <span className="text-gray-600 font-semibold">
+                    {product.category == topCollectionDoc.categoryId
+                      ? topCollectionDoc.name
+                      : allCategories.find(
+                          (category) => product.category == category.categoryId
+                        )?.name}
+                  </span>
+                </h6>
+              </div>
               <p
                 className="montserrat-font text-gray-400"
                 style={{ fontSize: "15px" }}

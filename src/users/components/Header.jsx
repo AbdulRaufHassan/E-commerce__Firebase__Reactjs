@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/App.css";
 import "../css/homePage.css";
 import {
@@ -8,8 +8,10 @@ import {
 } from "@ant-design/icons";
 import LOGO from "../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
+import { allProductsContext } from "../../context/allProductsContext";
 
 function Header() {
+  const allProducts = useContext(allProductsContext)
   const navigate = useNavigate();
   return (
     <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-2 md:px-5 py-1 header_boxShadow">

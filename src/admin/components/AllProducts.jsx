@@ -1,16 +1,13 @@
 import { Table } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import "../css/dashboard.css";
 import { allProductsContext } from "../../context/allProductsContext";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { allCategoriesContext } from "../../context/allCategoriesContext";
-import { topCollectionDocId } from "../../constants";
 
 function AllProducts({ openModal, setOpenModal }) {
-  const getAllProducts = useContext(allProductsContext);
-  const getAllCategories = useContext(allCategoriesContext);
-  const [allProducts, setAllProducts] = useState([]);
-  const [allCategories, setAllCategories] = useState([]);
+  const allProducts = useContext(allProductsContext);
+  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const tableHead = [
     {
       title: "S.No",
@@ -25,6 +22,7 @@ function AllProducts({ openModal, setOpenModal }) {
       dataIndex: "image",
       key: "image",
       align: "center",
+      width: 120,
     },
     {
       title: "Name",
@@ -69,13 +67,6 @@ function AllProducts({ openModal, setOpenModal }) {
       width: 200,
     },
   ];
-  useEffect(() => {
-    setAllProducts(getAllProducts);
-  }, [getAllProducts]);
-
-  useEffect(() => {
-    setAllCategories(getAllCategories);
-  }, [getAllCategories]);
 
   return (
     allProducts.length > 0 && (
@@ -96,21 +87,19 @@ function AllProducts({ openModal, setOpenModal }) {
             },
             index
           ) => {
-            const findCategory = allCategories.find(
-              (v) => category == v.categoryId
-            );
+            const categoryName =
+              category == topCollectionDoc.categoryId
+                ? topCollectionDoc.name
+                : allCategories.find((v) => category == v.categoryId).name;
             return {
               key: productId,
               no: index + 1,
               name: name,
               discription: <p className="text-sm">{discription}</p>,
               price,
-              category:
-                category == topCollectionDocId
-                  ? "Top Collection"
-                  : findCategory?.name,
+              category: categoryName,
               image: (
-                <div className="flex items-center justify-center h-16 w-16">
+                <div className="flex items-center justify-center h-24">
                   <img
                     src={imgUrl}
                     className="max-w-[90%] max-h-[90%] bg-cover"

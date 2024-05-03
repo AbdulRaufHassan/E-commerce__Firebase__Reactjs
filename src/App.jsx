@@ -17,7 +17,7 @@ import {
 } from "./config";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { adminEmail } from "./constants/index.js";
+import { adminEmail, topCollectionDocId } from "./constants/index.js";
 import { allProductsContext } from "./context/allProductsContext.js";
 import { allCategoriesContext } from "./context/allCategoriesContext.js";
 
@@ -26,6 +26,7 @@ function App() {
   const [userAuthenticated, setUserAuthenticated] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [topCollectionDoc, setTopCollectionDoc] = useState(null);
 
   const getAllProducts = () => {
     try {
@@ -55,9 +56,20 @@ function App() {
     }
   };
 
+  const getTopCollectionDoc = () => {
+    try {
+      onSnapshot(doc(db, "topCollections", topCollectionDocId), (doc) => {
+        setTopCollectionDoc(doc.data());
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     getAllProducts();
     getAllCategories();
+    getTopCollectionDoc();
   }, []);
 
   useEffect(() => {
@@ -88,7 +100,9 @@ function App() {
     </div>
   ) : (
     <allProductsContext.Provider value={allProducts}>
-      <allCategoriesContext.Provider value={allCategories}>
+      <allCategoriesContext.Provider
+        value={{ allCategories, topCollectionDoc }}
+      >
         <BrowserRouter>
           <Routes>
             <Route
