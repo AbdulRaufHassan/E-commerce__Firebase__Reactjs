@@ -2,17 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../css/App.css";
 import "../css/productDetail.css";
-import { HeartOutlined, LoadingOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import Header from "../components/Header";
-import { allProductsContext } from "../../context/allProductsContext";
-import { allCategoriesContext } from "../../context/allCategoriesContext";
+import {
+  allProductsContext,
+  allCategoriesContext,
+  currentUserDataContext,
+} from "../../context/index.js";
+import { favouriteToggleContext } from "../../context/FavouriteToggleContext.jsx";
+import Footer from "../components/Footer.jsx";
 
 function ProductDetail() {
   const { productId } = useParams();
   const allProducts = useContext(allProductsContext);
+  const { currentUserData } = useContext(currentUserDataContext);
   const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const [product, setProduct] = useState(null);
+  const toggleFavourite = useContext(favouriteToggleContext);
 
   useEffect(() => {
     const findProduct = allProducts.find(
@@ -37,9 +44,9 @@ function ProductDetail() {
           />
         </div>
       ) : (
-        <div className="min-h-screen max-h-fit w-full flex justify-center items-center productDetail_mainDiv">
+        <div className="min-h-screen max-h-fit w-full flex justify-center relative items-center productDetail_mainDiv">
           <Header />
-          <div className="flex product_detail_container mt-[170px] sm:mt-[200px] md:mt-[210px] lg:mt-[150px] mb-5">
+          <div className="flex product_detail_container mt-[170px] sm:mt-[200px] md:mt-[210px] lg:mt-[150px] mb-28">
             <div className="bg-gray-300 product_img_div flex items-center justify-center overflow-hidden">
               <img
                 src={product.imgUrl}
@@ -54,9 +61,11 @@ function ProductDetail() {
                 <h6 className="text-2xl ubunti-font font-bold text-gray-600">
                   RS {product.price}
                 </h6>
-                <h6 className=" montserrat-font">
-                  <span className="text-gray-400 font-medium">Category: </span>
-                  <span className="text-gray-600 font-semibold">
+                <h6 className=" montserrat-font flex items-center">
+                  <span className="text-gray-400 font-medium text-sm mr-2">
+                    Category:
+                  </span>
+                  <span className="text-gray-600 font-semibold flex items-center text-base">
                     {product.category == topCollectionDoc.categoryId
                       ? topCollectionDoc.name
                       : allCategories.find(
@@ -72,8 +81,17 @@ function ProductDetail() {
                 {product.discription}
               </p>
               <div className="mt-8 flex items-center w-full h-auto">
-                <button className="sm:ml-4">
-                  <HeartOutlined className="text-3xl text-gray-500" />
+                <button
+                  className="sm:ml-4"
+                  onClick={() => toggleFavourite(productId)}
+                >
+                  {currentUserData.favouriteItems.includes(
+                    product.productId
+                  ) ? (
+                    <HeartFilled className="text-3xl text-red-600" />
+                  ) : (
+                    <HeartOutlined className="text-3xl text-gray-500" />
+                  )}
                 </button>
                 <button className="mx-6 flex-1 h-12 bg-teal-500 text-white text-lg font-medium rounded-lg montserrat-font">
                   Add To Cart
@@ -81,6 +99,7 @@ function ProductDetail() {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       )}
     </>

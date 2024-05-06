@@ -1,9 +1,11 @@
 import { Table } from "antd";
 import React, { useContext } from "react";
 import "../css/dashboard.css";
-import { allProductsContext } from "../../context/allProductsContext";
+import {
+  allProductsContext,
+  allCategoriesContext,
+} from "../../context/index.js";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
-import { allCategoriesContext } from "../../context/allCategoriesContext";
 
 function AllProducts({ openModal, setOpenModal }) {
   const allProducts = useContext(allProductsContext);

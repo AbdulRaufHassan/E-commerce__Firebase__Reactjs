@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../css/App.css";
 import "../css/homePage.css";
 import Header from "../components/Header";
@@ -12,7 +12,7 @@ import Footer from "../components/Footer";
 
 function HomePage() {
   return (
-    <div className="flex flex-col relative">
+    <div className="flex flex-col min-h-screen max-h-fit w-full relative">
       <Header />
       <main className="mt-[124px] sm:mt-[156px] md:mt-[156px] lg:mt-[88px] w-full h-auto">
         <Carousel autoplay={true}>

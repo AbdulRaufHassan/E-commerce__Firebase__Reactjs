@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../css/App.css";
 import "../css/homePage.css";
 import { useNavigate } from "react-router-dom";
-import { allCategoriesContext } from "../../context/allCategoriesContext";
+import { allCategoriesContext } from "../../context/index.js";
 
 function Categories() {
   const { allCategories } = useContext(allCategoriesContext);

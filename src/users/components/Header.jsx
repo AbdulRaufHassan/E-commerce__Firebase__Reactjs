@@ -8,10 +8,10 @@ import {
 } from "@ant-design/icons";
 import LOGO from "../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { allProductsContext } from "../../context/allProductsContext";
+import { currentUserDataContext } from "../../context/index.js";
 
 function Header() {
-  const allProducts = useContext(allProductsContext)
+  const { currentUserData } = useContext(currentUserDataContext);
   const navigate = useNavigate();
   return (
     <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-2 md:px-5 py-1 header_boxShadow">
@@ -30,10 +30,13 @@ function Header() {
           />
         </div>
         <div className="w-auto flex items-center montserrat-font order-2 lg:order-3">
-          <button className="mx-4 sm:mx-6 relative">
+          <button
+            className="mx-4 sm:mx-6 relative"
+            onClick={() => navigate("/favouriteList")}
+          >
             <HeartOutlined className="text-2xl sm:text-3xl" />
             <span className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px] flex items-center justify-center bg-white rounded-full text-xs absolute top-[-5px] right-[-10px] sm:right-[-12px]">
-              0
+              {currentUserData?.favouriteItems?.length}
             </span>
           </button>
           <button className="mx-4 sm:mx-6 relative">

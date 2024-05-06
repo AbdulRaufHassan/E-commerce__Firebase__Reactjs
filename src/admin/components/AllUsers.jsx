@@ -2,7 +2,6 @@ import { Spin, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { auth, collection, db, onSnapshot, query, where } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
-import { adminEmail } from "../../constants";
 import "../css/dashboard.css";
 
 function AllUsers() {

@@ -18,7 +18,7 @@ import {
 } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
 import { topCollectionDocId } from "../../constants";
-import { allCategoriesContext } from "../../context/allCategoriesContext";
+import { allCategoriesContext } from "../../context/index.js";
 
 function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
   const { allCategories } = useContext(allCategoriesContext);

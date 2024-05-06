@@ -18,8 +18,13 @@ import {
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { adminEmail, topCollectionDocId } from "./constants/index.js";
-import { allProductsContext } from "./context/allProductsContext.js";
-import { allCategoriesContext } from "./context/allCategoriesContext.js";
+import {
+  allProductsContext,
+  allCategoriesContext,
+  currentUserDataContext,
+} from "./context/index.js";
+import { FavouriteToggleProvider } from "./context/FavouriteToggleContext.jsx";
+import FavouriteProducts from "./users/pages/FavouriteProducts.jsx";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +32,7 @@ function App() {
   const [allProducts, setAllProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
   const [topCollectionDoc, setTopCollectionDoc] = useState(null);
+  const [currentUserData, setCurrentUserData] = useState(null);
 
   const getAllProducts = () => {
     try {
@@ -36,6 +42,16 @@ function App() {
           tempArr.push(doc.data());
         });
         setAllProducts(tempArr);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getCurrentUserDoc = () => {
+    try {
+      onSnapshot(doc(db, "users", userAuthenticated.uid), (doc) => {
+        setCurrentUserData(doc.data());
       });
     } catch (e) {
       console.log(e);
@@ -67,10 +83,13 @@ function App() {
   };
 
   useEffect(() => {
-    getAllProducts();
-    getAllCategories();
-    getTopCollectionDoc();
-  }, []);
+    if (userAuthenticated?.uid) {
+      getCurrentUserDoc();
+      getAllProducts();
+      getAllCategories();
+      getTopCollectionDoc();
+    }
+  }, [userAuthenticated]);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -99,78 +118,104 @@ function App() {
       />
     </div>
   ) : (
-    <allProductsContext.Provider value={allProducts}>
-      <allCategoriesContext.Provider
-        value={{ allCategories, topCollectionDoc }}
-      >
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                !userAuthenticated ? (
-                  <SigninPage />
-                ) : userAuthenticated &&
+    <currentUserDataContext.Provider
+      value={{ currentUserData, setCurrentUserData }}
+    >
+      <allProductsContext.Provider value={allProducts}>
+        <allCategoriesContext.Provider
+          value={{ allCategories, topCollectionDoc }}
+        >
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  !userAuthenticated ? (
+                    <SigninPage />
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <Navigate to="/Home" />
+                  )
+                }
+              />
+              <Route
+                path="/AdminDashboard"
+                element={
+                  userAuthenticated &&
                   userAuthenticated.email === adminEmail ? (
-                  <Navigate to="/AdminDashboard" />
-                ) : (
-                  <Navigate to="/Home" />
-                )
-              }
-            />
-            <Route
-              path="/AdminDashboard"
-              element={
-                userAuthenticated && userAuthenticated.email === adminEmail ? (
-                  <AdminDashboard />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/Home"
-              element={
-                userAuthenticated && userAuthenticated.email != adminEmail ? (
-                  <HomePage />
-                ) : userAuthenticated &&
-                  userAuthenticated.email === adminEmail ? (
-                  <Navigate to="/AdminDashboard" />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/productDetail/:productId"
-              element={
-                !userAuthenticated ? (
-                  <Navigate to="/" />
-                ) : userAuthenticated &&
-                  userAuthenticated.email === adminEmail ? (
-                  <Navigate to="/AdminDashboard" />
-                ) : (
-                  <ProductDetail />
-                )
-              }
-            />
-            <Route
-              path="/category/:categoryId"
-              element={
-                !userAuthenticated ? (
-                  <Navigate to="/" />
-                ) : userAuthenticated &&
-                  userAuthenticated.email === adminEmail ? (
-                  <Navigate to="/AdminDashboard" />
-                ) : (
-                  <CategoryProducts />
-                )
-              }
-            />
-          </Routes>
-        </BrowserRouter>
-      </allCategoriesContext.Provider>
-    </allProductsContext.Provider>
+                    <AdminDashboard />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/Home"
+                element={
+                  userAuthenticated && userAuthenticated.email != adminEmail ? (
+                    <FavouriteToggleProvider>
+                      <HomePage />
+                    </FavouriteToggleProvider>
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
+              <Route
+                path="/productDetail/:productId"
+                element={
+                  !userAuthenticated ? (
+                    <Navigate to="/" />
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <FavouriteToggleProvider>
+                      <ProductDetail />
+                    </FavouriteToggleProvider>
+                  )
+                }
+              />
+              <Route
+                path="/category/:categoryId"
+                element={
+                  !userAuthenticated ? (
+                    <Navigate to="/" />
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <FavouriteToggleProvider>
+                      <CategoryProducts />
+                    </FavouriteToggleProvider>
+                  )
+                }
+              />
+              <Route
+                path="/favouriteList"
+                element={
+                  !userAuthenticated ? (
+                    <Navigate to="/" />
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <FavouriteToggleProvider>
+                      <FavouriteProducts />
+                    </FavouriteToggleProvider>
+                  )
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </allCategoriesContext.Provider>
+      </allProductsContext.Provider>
+    </currentUserDataContext.Provider>
   );
 }
 export default App;
