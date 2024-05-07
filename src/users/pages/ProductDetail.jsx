@@ -12,6 +12,7 @@ import {
 } from "../../context/index.js";
 import { favouriteToggleContext } from "../../context/FavouriteToggleContext.jsx";
 import Footer from "../components/Footer.jsx";
+import { cartItemToggleContext } from "../../context/CartTogglecontext.jsx";
 
 function ProductDetail() {
   const { productId } = useParams();
@@ -20,6 +21,7 @@ function ProductDetail() {
   const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const [product, setProduct] = useState(null);
   const toggleFavourite = useContext(favouriteToggleContext);
+  const toggleCart = useContext(cartItemToggleContext);
 
   useEffect(() => {
     const findProduct = allProducts.find(
@@ -27,6 +29,11 @@ function ProductDetail() {
     );
     setProduct(findProduct);
   }, [allProducts]);
+
+  const cartProductNotExist =
+    currentUserData?.cartItems.findIndex(
+      (item) => item.productId == productId
+    ) === -1;
   return (
     <>
       {!product ? (
@@ -93,8 +100,15 @@ function ProductDetail() {
                     <HeartOutlined className="text-3xl text-gray-500" />
                   )}
                 </button>
-                <button className="mx-6 flex-1 h-12 bg-teal-500 text-white text-lg font-medium rounded-lg montserrat-font">
-                  Add To Cart
+                <button
+                  onClick={() =>
+                    toggleCart({ productId: product.productId, quantity: 1 })
+                  }
+                  className={`mx-6 flex-1 h-12 ${
+                    cartProductNotExist ? "bg-teal-500" : "bg-gray-500"
+                  } text-white text-lg font-medium rounded-lg montserrat-font`}
+                >
+                  {cartProductNotExist ? "Add To Cart" : "Remove From Cart"}
                 </button>
               </div>
             </div>

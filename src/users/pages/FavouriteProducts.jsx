@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 import { favouriteToggleContext } from "../../context/FavouriteToggleContext";
+import { cartItemToggleContext } from "../../context/CartTogglecontext";
 
 function FavouriteProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
@@ -13,6 +14,7 @@ function FavouriteProducts() {
   const navigate = useNavigate();
   const [favouriteProducts, setFavouriteProducts] = useState([]);
   const removeFavourite = useContext(favouriteToggleContext);
+  const toggleCart = useContext(cartItemToggleContext);
 
   const handleProductClick = (productId) => {
     navigate(`/productDetail/${productId}`);
@@ -45,42 +47,55 @@ function FavouriteProducts() {
                 : `${favouriteProducts.length} items`}
             </h6>
             <ul className="mb-24">
-              {favouriteProducts.map(({ imgUrl, name, price, productId }) => (
-                <li
-                  key={productId}
-                  className="w-4/5 h-auto p-4 mx-auto my-8 box-border flex items-center bg-gray-300"
-                  style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
-                >
-                  <div className="w-auto h-auto flex items-center">
-                    <div className="min-w-28 max-w-28 h-auto">
-                      <img
-                        src={imgUrl}
-                        className="h-24 cover cursor-pointer"
-                        onClick={() => handleProductClick(productId)}
-                      />
+              {favouriteProducts.map(({ imgUrl, name, price, productId }) => {
+                const cartProductNotExist =
+                  currentUserData?.cartItems.findIndex(
+                    (item) => item.productId == productId
+                  ) === -1;
+                return (
+                  <li
+                    key={productId}
+                    className="w-4/5 h-auto p-4 mx-auto my-8 box-border flex items-center bg-gray-300"
+                    style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                  >
+                    <div className="w-auto h-auto flex items-center">
+                      <div className="min-w-28 max-w-28 h-auto">
+                        <img
+                          src={imgUrl}
+                          className="h-24 cover cursor-pointer"
+                          onClick={() => handleProductClick(productId)}
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <h1
+                          className="font-bold text-2xl montserrat-font cursor-pointer"
+                          onClick={() => handleProductClick(productId)}
+                        >
+                          {name}
+                        </h1>
+                        <h6 className="nunito-font font-semibold text-xl text-gray-500">
+                          RS {price}
+                        </h6>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <h1
-                        className="font-bold text-2xl montserrat-font cursor-pointer"
-                        onClick={() => handleProductClick(productId)}
+                    <div className="flex-1 h-auto flex items-center justify-end">
+                      <button
+                        onClick={() => toggleCart({ productId, quantity: 1 })}
+                        className={`w-48 h-12 ${
+                          cartProductNotExist ? "bg-teal-500" : "bg-gray-500"
+                        } text-white texl-base mr-8 font-medium rounded-3xl montserrat-font`}
                       >
-                        {name}
-                      </h1>
-                      <h6 className="nunito-font font-semibold text-xl text-gray-500">
-                        RS {price}
-                      </h6>
+                        {cartProductNotExist
+                          ? "Add To Cart"
+                          : "Remove From Cart"}
+                      </button>
+                      <button onClick={() => removeFavourite(productId)}>
+                        <CloseOutlined className="text-3xl" />
+                      </button>
                     </div>
-                  </div>
-                  <div className="flex-1 h-auto flex items-center justify-end">
-                    <button className="w-48 h-12 bg-teal-500 text-white text-lg mr-8 font-medium rounded-3xl montserrat-font">
-                      Add To Cart
-                    </button>
-                    <button onClick={() => removeFavourite(productId)}>
-                      <CloseOutlined className="text-3xl" />
-                    </button>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           </>
         ) : (

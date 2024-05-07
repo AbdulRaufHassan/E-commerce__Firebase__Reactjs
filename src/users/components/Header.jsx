@@ -39,10 +39,13 @@ function Header() {
               {currentUserData?.favouriteItems?.length}
             </span>
           </button>
-          <button className="mx-4 sm:mx-6 relative">
+          <button
+            className="mx-4 sm:mx-6 relative"
+            onClick={() => navigate("/cart")}
+          >
             <ShoppingCartOutlined className="text-2xl sm:text-3xl" />
             <span className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px] flex items-center justify-center bg-white rounded-full text-xs absolute top-[-5px] right-[-10px] sm:right-[-12px]">
-              0
+              {currentUserData?.cartItems?.length}
             </span>
           </button>
           <button className="ml-4 sm:ml-6">

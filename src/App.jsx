@@ -25,6 +25,8 @@ import {
 } from "./context/index.js";
 import { FavouriteToggleProvider } from "./context/FavouriteToggleContext.jsx";
 import FavouriteProducts from "./users/pages/FavouriteProducts.jsx";
+import CartProducts from "./users/pages/CartProducts.jsx";
+import { CartItemToggleProvider } from "./context/CartTogglecontext.jsx";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +54,7 @@ function App() {
     try {
       onSnapshot(doc(db, "users", userAuthenticated.uid), (doc) => {
         setCurrentUserData(doc.data());
+        localStorage.setItem("cartItems", JSON.stringify(currentUserData.cartItems));
       });
     } catch (e) {
       console.log(e);
@@ -155,9 +158,11 @@ function App() {
                 path="/Home"
                 element={
                   userAuthenticated && userAuthenticated.email != adminEmail ? (
-                    <FavouriteToggleProvider>
-                      <HomePage />
-                    </FavouriteToggleProvider>
+                    <CartItemToggleProvider>
+                      <FavouriteToggleProvider>
+                        <HomePage />
+                      </FavouriteToggleProvider>
+                    </CartItemToggleProvider>
                   ) : userAuthenticated &&
                     userAuthenticated.email === adminEmail ? (
                     <Navigate to="/AdminDashboard" />
@@ -175,9 +180,11 @@ function App() {
                     userAuthenticated.email === adminEmail ? (
                     <Navigate to="/AdminDashboard" />
                   ) : (
-                    <FavouriteToggleProvider>
-                      <ProductDetail />
-                    </FavouriteToggleProvider>
+                    <CartItemToggleProvider>
+                      <FavouriteToggleProvider>
+                        <ProductDetail />
+                      </FavouriteToggleProvider>
+                    </CartItemToggleProvider>
                   )
                 }
               />
@@ -190,9 +197,11 @@ function App() {
                     userAuthenticated.email === adminEmail ? (
                     <Navigate to="/AdminDashboard" />
                   ) : (
-                    <FavouriteToggleProvider>
-                      <CategoryProducts />
-                    </FavouriteToggleProvider>
+                    <CartItemToggleProvider>
+                      <FavouriteToggleProvider>
+                        <CategoryProducts />
+                      </FavouriteToggleProvider>
+                    </CartItemToggleProvider>
                   )
                 }
               />
@@ -205,9 +214,26 @@ function App() {
                     userAuthenticated.email === adminEmail ? (
                     <Navigate to="/AdminDashboard" />
                   ) : (
-                    <FavouriteToggleProvider>
-                      <FavouriteProducts />
-                    </FavouriteToggleProvider>
+                    <CartItemToggleProvider>
+                      <FavouriteToggleProvider>
+                        <FavouriteProducts />
+                      </FavouriteToggleProvider>
+                    </CartItemToggleProvider>
+                  )
+                }
+              />
+              <Route
+                path="/cart"
+                element={
+                  !userAuthenticated ? (
+                    <Navigate to="/" />
+                  ) : userAuthenticated &&
+                    userAuthenticated.email === adminEmail ? (
+                    <Navigate to="/AdminDashboard" />
+                  ) : (
+                    <CartItemToggleProvider>
+                      <CartProducts />
+                    </CartItemToggleProvider>
                   )
                 }
               />

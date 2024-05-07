@@ -4,7 +4,7 @@ import "../css/App.css";
 function Footer() {
   return (
     <footer
-      className="w-full h-16 absolute bottom-0 left-0 bg-teal-500 flex items-center justify-center"
+      className="w-full h-16 absolute bottom-0 left-0 bg-teal-500 flex items-center justify-center z-50"
       style={{ boxShadow: "0px -2px 5px 0px rgba(158,153,158,1)" }}
     >
       <p className="text-white ubuntu-font">

@@ -5,7 +5,7 @@ import { db, doc, updateDoc } from "../config/index.js";
 export const favouriteToggleContext = createContext();
 
 export const FavouriteToggleProvider = ({ children }) => {
-  const { currentUserData, setCurrentUserData } = useContext(
+  const { currentUserData } = useContext(
     currentUserDataContext
   );
 
@@ -25,7 +25,6 @@ export const FavouriteToggleProvider = ({ children }) => {
       await updateDoc(userDocRef, {
         favouriteItems: updatedUserData.favouriteItems,
       });
-      console.log("Update Successful");
     } catch (error) {
       console.log(error);
     }
