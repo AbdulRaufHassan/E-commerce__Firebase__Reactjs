@@ -28,7 +28,7 @@ function CategoryProducts() {
     );
     setCurrentCategory(findCategory);
     const findCategoryProducts = getAllProducts.filter((product) =>
-      findCategory.products.includes(product.productId)
+      findCategory?.products.includes(product.productId)
     );
     setAllCategoryProducts(findCategoryProducts);
   }, [allCategories, getAllProducts]);

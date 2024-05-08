@@ -6,7 +6,6 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { CloseOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { cartItemToggleContext } from "../../context/CartTogglecontext";
-import { db, doc, updateDoc } from "../../config";
 
 function CartProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
@@ -19,34 +18,42 @@ function CartProducts() {
     navigate(`/productDetail/${productId}`);
   };
 
-  const inc_decQuantity = ({ productId, type }) => {
-    const updatedCartProducts = cartProducts.map((product) =>
-      product.productId === productId
-        ? {
-            ...product,
-            quantity:
-              type === "increment"
-                ? product.quantity + 1
-                : product.quantity > 1
-                ? product.quantity - 1
-                : product.quantity,
-          }
-        : product
-    );
-    setCartProducts(updatedCartProducts);
-  };
-
-  useEffect(() => {
+  const setCartItems = (localStorageCart) => {
     const filterProducts = [];
     allProducts.forEach((product) => {
-      const findItem = currentUserData.cartItems.find(
+      const findItem = localStorageCart.find(
         (item) => item.productId == product.productId
       );
       findItem &&
         filterProducts.push({ ...product, quantity: findItem.quantity });
     });
-    setCartProducts(filterProducts);
-  }, [currentUserData, allProducts]);
+    setCartProducts([...filterProducts]);
+  };
+
+  const inc_decQuantity = ({ productId, type }) => {
+    const updatedCartItems = JSON.parse(localStorage.getItem("cartItems"));
+    updatedCartItems.forEach((product) => {
+      if (product.productId === productId) {
+        product.quantity =
+          type === "increment"
+            ? product.quantity + 1
+            : product.quantity > 1
+            ? product.quantity - 1
+            : product.quantity;
+      }
+    });
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    setCartItems(updatedCartItems);
+  };
+
+  useEffect(() => {
+    const getItems = JSON.parse(localStorage.getItem("cartItems"));
+    setCartItems(getItems);
+  }, [
+    currentUserData,
+    allProducts,
+    JSON.parse(localStorage.getItem("cartItems")),
+  ]);
   return (
     <div className="w-full min-h-screen max-h-fit relative flex flex-col">
       <Header />

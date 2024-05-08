@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../css/App.css";
 import "../css/homePage.css";
 import {
@@ -13,6 +13,17 @@ import { currentUserDataContext } from "../../context/index.js";
 function Header() {
   const { currentUserData } = useContext(currentUserDataContext);
   const navigate = useNavigate();
+  const [totalCartItems, setTotalCartItems] = useState(0);
+
+  const getItem = JSON.parse(localStorage.getItem("cartItems"));
+  useEffect(() => {
+    const localCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const totalQuantity = localCartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    setTotalCartItems(totalQuantity);
+  }, [getItem]);
   return (
     <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-2 md:px-5 py-1 header_boxShadow">
       <div className="flex items-center justify-between lg:justify-normal flex-wrap lg:flex-nowrap w-full h-auto">
@@ -45,7 +56,7 @@ function Header() {
           >
             <ShoppingCartOutlined className="text-2xl sm:text-3xl" />
             <span className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px] flex items-center justify-center bg-white rounded-full text-xs absolute top-[-5px] right-[-10px] sm:right-[-12px]">
-              {currentUserData?.cartItems?.length}
+              {totalCartItems}
             </span>
           </button>
           <button className="ml-4 sm:ml-6">

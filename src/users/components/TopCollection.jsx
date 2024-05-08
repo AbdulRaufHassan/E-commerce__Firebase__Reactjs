@@ -20,7 +20,7 @@ function TopCollection() {
 
   useEffect(() => {
     const topProductsFilter = allProducts.filter((product) =>
-      topCollectionDoc.products.includes(product.productId)
+      topCollectionDoc?.products?.includes(product.productId)
     );
     setTopCollectionProducts(topProductsFilter);
   }, [allProducts, topCollectionDoc]);

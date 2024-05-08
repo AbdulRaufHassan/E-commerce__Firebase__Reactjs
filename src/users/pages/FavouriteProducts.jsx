@@ -22,7 +22,7 @@ function FavouriteProducts() {
 
   useEffect(() => {
     const filterProducts = allProducts.filter((product) =>
-      currentUserData.favouriteItems.includes(product.productId)
+      currentUserData?.favouriteItems.includes(product.productId)
     );
     setFavouriteProducts(filterProducts);
   }, [currentUserData, allProducts]);

@@ -50,11 +50,46 @@ function App() {
     }
   };
 
+  const setCartItemLocalStrg = () => {
+    const localStrg_cartItems = [];
+    const getCartLocalStorage = JSON.parse(localStorage.getItem("cartItems"));
+    if (getCartLocalStorage) {
+      currentUserData.cartItems.forEach((item) => {
+        const findItemLocalStrg = getCartLocalStorage.find(
+          (v) => v.productId === item.productId
+        );
+        if (findItemLocalStrg) {
+          localStrg_cartItems.push({
+            productId: findItemLocalStrg.productId,
+            quantity: findItemLocalStrg.quantity,
+          });
+        } else {
+          localStrg_cartItems.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+        }
+      });
+    } else {
+      currentUserData.cartItems.forEach((item) => {
+        localStrg_cartItems.push({
+          productId: item.productId,
+          quantity: item.quantity,
+        });
+      });
+    }
+
+    localStorage.setItem("cartItems", JSON.stringify(localStrg_cartItems));
+  };
+
+  useEffect(() => {
+    currentUserData?.cartItems && setCartItemLocalStrg();
+  }, [currentUserData]);
+
   const getCurrentUserDoc = () => {
     try {
       onSnapshot(doc(db, "users", userAuthenticated.uid), (doc) => {
         setCurrentUserData(doc.data());
-        localStorage.setItem("cartItems", JSON.stringify(currentUserData.cartItems));
       });
     } catch (e) {
       console.log(e);
