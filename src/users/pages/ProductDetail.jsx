@@ -21,7 +21,7 @@ function ProductDetail() {
   const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const [product, setProduct] = useState(null);
   const toggleFavourite = useContext(favouriteToggleContext);
-  const toggleCart = useContext(cartItemToggleContext);
+  const {toggleCart} = useContext(cartItemToggleContext);
 
   useEffect(() => {
     const findProduct = allProducts.find(

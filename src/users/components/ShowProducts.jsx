@@ -9,7 +9,7 @@ import { cartItemToggleContext } from "../../context/CartTogglecontext.jsx";
 function ShowProducts({ products, onClickFunc }) {
   const { currentUserData } = useContext(currentUserDataContext);
   const toggleFavourite = useContext(favouriteToggleContext);
-  const toggleCart = useContext(cartItemToggleContext);
+  const {toggleCart} = useContext(cartItemToggleContext);
 
   return (
     <ul className="min-w-fit max-w-fit mx-auto h-auto box-border pb-24 flex justify-center flex-wrap">

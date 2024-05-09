@@ -14,7 +14,7 @@ function FavouriteProducts() {
   const navigate = useNavigate();
   const [favouriteProducts, setFavouriteProducts] = useState([]);
   const removeFavourite = useContext(favouriteToggleContext);
-  const toggleCart = useContext(cartItemToggleContext);
+  const { toggleCart } = useContext(cartItemToggleContext);
 
   const handleProductClick = (productId) => {
     navigate(`/productDetail/${productId}`);

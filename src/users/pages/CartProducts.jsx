@@ -4,21 +4,30 @@ import { allProductsContext, currentUserDataContext } from "../../context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-import { CloseOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  LoadingOutlined,
+  MinusOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { cartItemToggleContext } from "../../context/CartTogglecontext";
+import { Spin } from "antd";
 
 function CartProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
   const allProducts = useContext(allProductsContext);
   const [cartProducts, setCartProducts] = useState([]);
-  const removeCart = useContext(cartItemToggleContext);
+  const { toggleCart, setCartItemLocalStrg } = useContext(
+    cartItemToggleContext
+  );
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleProductClick = (productId) => {
     navigate(`/productDetail/${productId}`);
   };
 
-  const setCartItems = (localStorageCart) => {
+  const getAndSetCartItems = (localStorageCart) => {
     const filterProducts = [];
     allProducts.forEach((product) => {
       const findItem = localStorageCart.find(
@@ -28,33 +37,51 @@ function CartProducts() {
         filterProducts.push({ ...product, quantity: findItem.quantity });
     });
     setCartProducts([...filterProducts]);
+    setLoading(false);
   };
 
   const inc_decQuantity = ({ productId, type }) => {
-    const updatedCartItems = JSON.parse(localStorage.getItem("cartItems"));
-    updatedCartItems.forEach((product) => {
-      if (product.productId === productId) {
-        product.quantity =
-          type === "increment"
-            ? product.quantity + 1
-            : product.quantity > 1
-            ? product.quantity - 1
-            : product.quantity;
+    const getCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const updatedCartItems = getCartItems.map((item) => {
+      if (item.productId === productId) {
+        return {
+          ...item,
+          quantity:
+            type === "increment"
+              ? item.quantity + 1
+              : item.quantity > 1
+              ? item.quantity - 1
+              : item.quantity,
+        };
       }
+      return item;
     });
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-    setCartItems(updatedCartItems);
+    getAndSetCartItems(updatedCartItems);
   };
 
   useEffect(() => {
-    const getItems = JSON.parse(localStorage.getItem("cartItems"));
-    setCartItems(getItems);
-  }, [
-    currentUserData,
-    allProducts,
-    JSON.parse(localStorage.getItem("cartItems")),
-  ]);
-  return (
+    setLoading(true);
+    currentUserData?.cartItems && setCartItemLocalStrg();
+    getAndSetCartItems(JSON.parse(localStorage.getItem("cartItems")));
+  }, [currentUserData]);
+
+  console.log(loading, cartProducts);
+  return loading ? (
+    <div className="flex items-center justify-center min-h-screen max-h-fit w-full bg-teal-500">
+      <Spin
+        indicator={
+          <LoadingOutlined
+            style={{
+              fontSize: 60,
+              color: "black",
+            }}
+            spin
+          />
+        }
+      />
+    </div>
+  ) : (
     <div className="w-full min-h-screen max-h-fit relative flex flex-col">
       <Header />
       <main className="flex flex-col flex-1">
@@ -125,7 +152,7 @@ function CartProducts() {
                             <MinusOutlined className="text-lg" />
                           </button>
                         </div>
-                        <button onClick={() => removeCart({ productId })}>
+                        <button onClick={() => toggleCart({ productId })}>
                           <CloseOutlined className="text-3xl" />
                         </button>
                       </div>

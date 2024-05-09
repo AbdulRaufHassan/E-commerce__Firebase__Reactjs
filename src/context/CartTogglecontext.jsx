@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { currentUserDataContext } from "./index.js";
 import { db, doc, updateDoc } from "../config/index.js";
 
@@ -30,8 +30,39 @@ export const CartItemToggleProvider = ({ children }) => {
     }
   };
 
+  const setCartItemLocalStrg = () => {
+    let localStrg_cartItems = [];
+    const getCartLocalStorage = JSON.parse(localStorage.getItem("cartItems"));
+    if (getCartLocalStorage) {
+      currentUserData.cartItems.forEach((item) => {
+        const findItemLocalStrg = getCartLocalStorage.find(
+          (v) => v.productId === item.productId
+        );
+        if (findItemLocalStrg) {
+          localStrg_cartItems.push({
+            productId: findItemLocalStrg.productId,
+            quantity: findItemLocalStrg.quantity,
+          });
+        } else {
+          localStrg_cartItems.push({
+            productId: item.productId,
+            quantity: item.quantity,
+          });
+        }
+      });
+    } else {
+      localStrg_cartItems = currentUserData.cartItems;
+    }
+    localStorage.setItem("cartItems", JSON.stringify(localStrg_cartItems));
+  };
+  useEffect(() => {
+    currentUserData?.cartItems && setCartItemLocalStrg();
+  }, [currentUserData]);
+
   return (
-    <cartItemToggleContext.Provider value={toggleCart}>
+    <cartItemToggleContext.Provider
+      value={{ toggleCart, setCartItemLocalStrg }}
+    >
       {children}
     </cartItemToggleContext.Provider>
   );

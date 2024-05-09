@@ -15,15 +15,15 @@ function Header() {
   const navigate = useNavigate();
   const [totalCartItems, setTotalCartItems] = useState(0);
 
-  const getItem = JSON.parse(localStorage.getItem("cartItems"));
   useEffect(() => {
     const localCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    const totalQuantity = localCartItems.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
+    let totalQuantity = 0;
+    localCartItems.forEach((item) => {
+      totalQuantity += item.quantity;
+    });
     setTotalCartItems(totalQuantity);
-  }, [getItem]);
+  });
+
   return (
     <header className="h-auto w-full fixed top-0 left-0 z-50 bg-teal-500 px-2 md:px-5 py-1 header_boxShadow">
       <div className="flex items-center justify-between lg:justify-normal flex-wrap lg:flex-nowrap w-full h-auto">

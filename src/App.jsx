@@ -50,42 +50,6 @@ function App() {
     }
   };
 
-  const setCartItemLocalStrg = () => {
-    const localStrg_cartItems = [];
-    const getCartLocalStorage = JSON.parse(localStorage.getItem("cartItems"));
-    if (getCartLocalStorage) {
-      currentUserData.cartItems.forEach((item) => {
-        const findItemLocalStrg = getCartLocalStorage.find(
-          (v) => v.productId === item.productId
-        );
-        if (findItemLocalStrg) {
-          localStrg_cartItems.push({
-            productId: findItemLocalStrg.productId,
-            quantity: findItemLocalStrg.quantity,
-          });
-        } else {
-          localStrg_cartItems.push({
-            productId: item.productId,
-            quantity: item.quantity,
-          });
-        }
-      });
-    } else {
-      currentUserData.cartItems.forEach((item) => {
-        localStrg_cartItems.push({
-          productId: item.productId,
-          quantity: item.quantity,
-        });
-      });
-    }
-
-    localStorage.setItem("cartItems", JSON.stringify(localStrg_cartItems));
-  };
-
-  useEffect(() => {
-    currentUserData?.cartItems && setCartItemLocalStrg();
-  }, [currentUserData]);
-
   const getCurrentUserDoc = () => {
     try {
       onSnapshot(doc(db, "users", userAuthenticated.uid), (doc) => {
@@ -163,117 +127,110 @@ function App() {
         <allCategoriesContext.Provider
           value={{ allCategories, topCollectionDoc }}
         >
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  !userAuthenticated ? (
-                    <SigninPage />
-                  ) : userAuthenticated &&
+          <CartItemToggleProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    !userAuthenticated ? (
+                      <SigninPage />
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
+                      <Navigate to="/Home" />
+                    )
+                  }
+                />
+                <Route
+                  path="/AdminDashboard"
+                  element={
+                    userAuthenticated &&
                     userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <Navigate to="/Home" />
-                  )
-                }
-              />
-              <Route
-                path="/AdminDashboard"
-                element={
-                  userAuthenticated &&
-                  userAuthenticated.email === adminEmail ? (
-                    <AdminDashboard />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
-              <Route
-                path="/Home"
-                element={
-                  userAuthenticated && userAuthenticated.email != adminEmail ? (
-                    <CartItemToggleProvider>
+                      <AdminDashboard />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/Home"
+                  element={
+                    userAuthenticated &&
+                    userAuthenticated.email != adminEmail ? (
                       <FavouriteToggleProvider>
                         <HomePage />
                       </FavouriteToggleProvider>
-                    </CartItemToggleProvider>
-                  ) : userAuthenticated &&
-                    userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
-              <Route
-                path="/productDetail/:productId"
-                element={
-                  !userAuthenticated ? (
-                    <Navigate to="/" />
-                  ) : userAuthenticated &&
-                    userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <CartItemToggleProvider>
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/productDetail/:productId"
+                  element={
+                    !userAuthenticated ? (
+                      <Navigate to="/" />
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
                       <FavouriteToggleProvider>
                         <ProductDetail />
                       </FavouriteToggleProvider>
-                    </CartItemToggleProvider>
-                  )
-                }
-              />
-              <Route
-                path="/category/:categoryId"
-                element={
-                  !userAuthenticated ? (
-                    <Navigate to="/" />
-                  ) : userAuthenticated &&
-                    userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <CartItemToggleProvider>
+                    )
+                  }
+                />
+                <Route
+                  path="/category/:categoryId"
+                  element={
+                    !userAuthenticated ? (
+                      <Navigate to="/" />
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
                       <FavouriteToggleProvider>
                         <CategoryProducts />
                       </FavouriteToggleProvider>
-                    </CartItemToggleProvider>
-                  )
-                }
-              />
-              <Route
-                path="/favouriteList"
-                element={
-                  !userAuthenticated ? (
-                    <Navigate to="/" />
-                  ) : userAuthenticated &&
-                    userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <CartItemToggleProvider>
+                    )
+                  }
+                />
+                <Route
+                  path="/favouriteList"
+                  element={
+                    !userAuthenticated ? (
+                      <Navigate to="/" />
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
                       <FavouriteToggleProvider>
                         <FavouriteProducts />
                       </FavouriteToggleProvider>
-                    </CartItemToggleProvider>
-                  )
-                }
-              />
-              <Route
-                path="/cart"
-                element={
-                  !userAuthenticated ? (
-                    <Navigate to="/" />
-                  ) : userAuthenticated &&
-                    userAuthenticated.email === adminEmail ? (
-                    <Navigate to="/AdminDashboard" />
-                  ) : (
-                    <CartItemToggleProvider>
+                    )
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={
+                    !userAuthenticated ? (
+                      <Navigate to="/" />
+                    ) : userAuthenticated &&
+                      userAuthenticated.email === adminEmail ? (
+                      <Navigate to="/AdminDashboard" />
+                    ) : (
                       <CartProducts />
-                    </CartItemToggleProvider>
-                  )
-                }
-              />
-            </Routes>
-          </BrowserRouter>
+                    )
+                  }
+                />
+              </Routes>
+            </BrowserRouter>
+          </CartItemToggleProvider>
         </allCategoriesContext.Provider>
       </allProductsContext.Provider>
     </currentUserDataContext.Provider>
