@@ -17,10 +17,9 @@ function CartProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
   const allProducts = useContext(allProductsContext);
   const [cartProducts, setCartProducts] = useState([]);
-  const { toggleCart, setCartItemLocalStrg } = useContext(
-    cartItemToggleContext
-  );
+  const { toggleCart } = useContext(cartItemToggleContext);
   const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   const handleProductClick = (productId) => {
@@ -40,6 +39,14 @@ function CartProducts() {
     setLoading(false);
   };
 
+  const calculateTotal = () => {
+    let value = 0;
+    cartProducts.forEach((product) => {
+      value += product.price * product.quantity;
+    });
+    setTotal(value);
+  };
+
   const inc_decQuantity = ({ productId, type }) => {
     const getCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
     const updatedCartItems = getCartItems.map((item) => {
@@ -47,26 +54,25 @@ function CartProducts() {
         return {
           ...item,
           quantity:
-            type === "increment"
-              ? item.quantity + 1
-              : item.quantity > 1
-              ? item.quantity - 1
-              : item.quantity,
+            type === "increment" ? item.quantity + 1 : item.quantity - 1,
         };
       }
       return item;
     });
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     getAndSetCartItems(updatedCartItems);
+    calculateTotal();
   };
 
   useEffect(() => {
     setLoading(true);
-    currentUserData?.cartItems && setCartItemLocalStrg();
     getAndSetCartItems(JSON.parse(localStorage.getItem("cartItems")));
   }, [currentUserData]);
 
-  console.log(loading, cartProducts);
+  useEffect(() => {
+    calculateTotal();
+  });
+
   return loading ? (
     <div className="flex items-center justify-center min-h-screen max-h-fit w-full bg-teal-500">
       <Spin
@@ -86,74 +92,72 @@ function CartProducts() {
       <Header />
       <main className="flex flex-col flex-1">
         <div className="h-[100px] sm:h-[150px] md:h-[150px] lg:h-[88px] w-full"></div>
-        <div
-          className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center"
-          style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
-        >
+        <div className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center">
           <h1 className="text-6xl montserrat-font text-white font-bold">
             Cart List
           </h1>
         </div>
         {cartProducts.length > 0 ? (
-          <div className="flex h-auto justify-between w-full mb-24">
-            <div className="w-3/5 ml-4 h-auto">
-              <h6 className="mb-4 mt-10 montserrat-font text-2xl text-gray-500 font-semibold">
+          <div className="flex h-auto justify-between flex-col-reverse lg:flex-row w-full mb-24">
+            <div className="h-auto mx-2 md:mx-4 w-[calc(100%-16px)] md:w-[calc(100%-32px)] lg:w-[65%]">
+              <h6 className="mx-4 mt-10 mb-4 montserrat-font text-2xl text-gray-500 font-semibold">
                 {cartProducts.length == 1
                   ? `${cartProducts.length} item`
                   : `${cartProducts.length} items`}
               </h6>
-              <ul>
+              <ul className="w-full">
                 {cartProducts.map(
                   ({ imgUrl, name, price, productId, quantity }) => (
                     <li
                       key={productId}
-                      className="h-auto p-4 my-8 box-border flex items-center bg-gray-300"
-                      style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                      className="h-auto py-4 pr-2 sm:pr-4 min-w-full max-w-full mb-8 box-border flex items-center bg-gray-300"
+                      style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
                     >
                       <div className="w-auto h-auto flex items-center">
-                        <div className="min-w-28 max-w-28 h-auto">
+                        <div className="min-w-[80px] max-w-[80px] sm:min-w-28 sm:max-w-28 h-auto flex items-center justify-center">
                           <img
                             src={imgUrl}
-                            className="h-24 cover cursor-pointer"
+                            className="h-[70px] sm:h-24 cover cursor-pointer"
                             onClick={() => handleProductClick(productId)}
                           />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col pr-5 sm:pr-0">
                           <h1
-                            className="font-bold text-2xl montserrat-font cursor-pointer"
+                            className="font-bold text-[16px] sm:text-xl md:text-2xl montserrat-font cursor-pointer"
                             onClick={() => handleProductClick(productId)}
                           >
                             {name}
                           </h1>
-                          <h6 className="nunito-font font-semibold text-xl text-gray-500">
+                          <h6 className="nunito-font font-semibold text-sm sm:text-lg md:text-xl text-gray-500">
                             RS {price}
                           </h6>
                         </div>
                       </div>
                       <div className="flex-1 h-auto flex items-center justify-end">
-                        <div className="text-gray-500 mr-8 flex items-center">
+                        <div className="text-gray-500 mr-4 sm:mr-6 md:mr-8 flex items-center">
                           <button
-                            className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center"
+                            className="w-[25px] h-[25px] sm:w-[30px] sm:h-[30px] rounded-full bg-white flex items-center justify-center"
                             onClick={() =>
                               inc_decQuantity({ productId, type: "increment" })
                             }
                           >
-                            <PlusOutlined className="text-lg" />
+                            <PlusOutlined className="text-base sm:text-lg" />
                           </button>
-                          <span className="text-2xl mx-4 montserrat-font">
+                          <span className="text-xl sm:text-2xl mx-2 sm:mx-3 md:mx-4 montserrat-font">
                             {quantity}
                           </span>
                           <button
-                            className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center"
+                            className="w-[25px] h-[25px] sm:w-[30px] sm:h-[30px] rounded-full bg-white flex items-center justify-center"
                             onClick={() =>
+                              quantity != 1 &&
                               inc_decQuantity({ productId, type: "decrement" })
                             }
                           >
-                            <MinusOutlined className="text-lg" />
+                            <MinusOutlined className="text-base sm:text-lg" />
                           </button>
                         </div>
                         <button onClick={() => toggleCart({ productId })}>
-                          <CloseOutlined className="text-3xl" />
+                          <CloseOutlined className="text-xl sm:text-3xl" />
                         </button>
                       </div>
                     </li>
@@ -162,9 +166,20 @@ function CartProducts() {
               </ul>
             </div>
             <div
-              className="h-[300px] w-[30%] bg-white mr-4 mt-16"
-              style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
-            ></div>
+              className="h-fit w-[300px] lg:w-[30%] ml-4 lg:ml-0 bg-white mr-4 mt-10 p-4 box-border flex flex-col"
+              style={{
+                boxShadow:
+                  "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",
+              }}
+            >
+              <div className="w-full flex justify-between montserrat-font mt-2">
+                <h1 className="text-gray-500 text-2xl font-semibold">Total</h1>
+                <h1 className="text-black text-2xl">{total}</h1>
+              </div>
+              <button className="w-full h-12 bg-teal-500 text-white text-lg font-medium rounded-lg mt-6 montserrat-font">
+                Buy Now
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mb-16 w-full flex justify-center items-center flex-1 montserrat-font text-2xl">

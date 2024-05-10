@@ -9,19 +9,25 @@ import {
 import LOGO from "../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { currentUserDataContext } from "../../context/index.js";
+import { cartItemToggleContext } from "../../context/CartTogglecontext.jsx";
 
 function Header() {
   const { currentUserData } = useContext(currentUserDataContext);
+  const { setCartItemLocalStrg } = useContext(cartItemToggleContext);
   const navigate = useNavigate();
   const [totalCartItems, setTotalCartItems] = useState(0);
 
   useEffect(() => {
-    const localCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    let totalQuantity = 0;
-    localCartItems.forEach((item) => {
-      totalQuantity += item.quantity;
-    });
-    setTotalCartItems(totalQuantity);
+    if (currentUserData?.cartItems) {
+      setCartItemLocalStrg();
+      const localCartItems =
+        JSON.parse(localStorage.getItem("cartItems")) || [];
+      let totalQuantity = 0;
+      localCartItems.forEach((item) => {
+        totalQuantity += item.quantity;
+      });
+      setTotalCartItems(totalQuantity);
+    }
   });
 
   return (

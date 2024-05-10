@@ -120,15 +120,15 @@ function App() {
       />
     </div>
   ) : (
-    <currentUserDataContext.Provider
-      value={{ currentUserData, setCurrentUserData }}
-    >
-      <allProductsContext.Provider value={allProducts}>
-        <allCategoriesContext.Provider
-          value={{ allCategories, topCollectionDoc }}
-        >
-          <CartItemToggleProvider>
-            <BrowserRouter>
+    <BrowserRouter>
+      <currentUserDataContext.Provider
+        value={{ currentUserData, setCurrentUserData }}
+      >
+        <allProductsContext.Provider value={allProducts}>
+          <allCategoriesContext.Provider
+            value={{ allCategories, topCollectionDoc }}
+          >
+            <CartItemToggleProvider>
               <Routes>
                 <Route
                   path="/"
@@ -229,11 +229,11 @@ function App() {
                   }
                 />
               </Routes>
-            </BrowserRouter>
-          </CartItemToggleProvider>
-        </allCategoriesContext.Provider>
-      </allProductsContext.Provider>
-    </currentUserDataContext.Provider>
+            </CartItemToggleProvider>
+          </allCategoriesContext.Provider>
+        </allProductsContext.Provider>
+      </currentUserDataContext.Provider>
+    </BrowserRouter>
   );
 }
 export default App;

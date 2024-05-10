@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect } from "react";
 import { currentUserDataContext } from "./index.js";
 import { db, doc, updateDoc } from "../config/index.js";
+import { useLocation } from "react-router-dom";
 
 export const cartItemToggleContext = createContext();
 
 export const CartItemToggleProvider = ({ children }) => {
   const { currentUserData } = useContext(currentUserDataContext);
+  const location = useLocation();
 
   const toggleCart = async (cartItem) => {
     let updatedUserData = { ...currentUserData };
@@ -56,7 +58,9 @@ export const CartItemToggleProvider = ({ children }) => {
     localStorage.setItem("cartItems", JSON.stringify(localStrg_cartItems));
   };
   useEffect(() => {
-    currentUserData?.cartItems && setCartItemLocalStrg();
+    location.pathname != "/cart" &&
+      currentUserData?.cartItems &&
+      setCartItemLocalStrg();
   }, [currentUserData]);
 
   return (

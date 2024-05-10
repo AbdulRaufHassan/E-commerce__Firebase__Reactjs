@@ -31,10 +31,7 @@ function FavouriteProducts() {
       <Header />
       <main className="flex flex-col flex-1">
         <div className="h-[100px] sm:h-[150px] md:h-[150px] lg:h-[88px] w-full"></div>
-        <div
-          className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center"
-          style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
-        >
+        <div className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center">
           <h1 className="text-6xl montserrat-font text-white font-bold">
             Favourite List
           </h1>
@@ -55,42 +52,42 @@ function FavouriteProducts() {
                 return (
                   <li
                     key={productId}
-                    className="w-4/5 h-auto p-4 mx-auto my-8 box-border flex items-center bg-gray-300"
-                    style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}
+                    className="w-[calc(100%-8px)] sm:w-[calc(100%-16px)] mx-1 sm:mx-2 xl:w-4/5 h-auto pr-4 py-4 xl:mx-auto my-8 box-border flex items-center bg-gray-300"
+                    style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
                   >
                     <div className="w-auto h-auto flex items-center">
-                      <div className="min-w-28 max-w-28 h-auto">
+                      <div className="min-w-[80px] max-w-[80px] sm:min-w-28 sm:max-w-28 h-auto flex items-center justify-center">
                         <img
                           src={imgUrl}
-                          className="h-24 cover cursor-pointer"
+                          className="h-[70px] sm:h-24 cover cursor-pointer"
                           onClick={() => handleProductClick(productId)}
                         />
                       </div>
                       <div className="flex flex-col">
                         <h1
-                          className="font-bold text-2xl montserrat-font cursor-pointer"
+                          className="font-bold text-[16px] sm:text-xl lg:text-2xl montserrat-font cursor-pointer"
                           onClick={() => handleProductClick(productId)}
                         >
                           {name}
                         </h1>
-                        <h6 className="nunito-font font-semibold text-xl text-gray-500">
+                        <h6 className="nunito-font font-semibold text-sm sm:text-lg md:text-xl text-gray-500">
                           RS {price}
                         </h6>
                       </div>
                     </div>
-                    <div className="flex-1 h-auto flex items-center justify-end">
+                    <div className="flex-1 ml-4 h-auto flex items-center justify-end">
                       <button
                         onClick={() => toggleCart({ productId, quantity: 1 })}
-                        className={`w-48 h-12 ${
+                        className={`text-xs sm:text-sm lg:text-base w-[150px] sm:w-[165px] lg:w-48 h-12 ${
                           cartProductNotExist ? "bg-teal-500" : "bg-gray-500"
-                        } text-white texl-base mr-8 font-medium rounded-3xl montserrat-font`}
+                        } text-white mr-3 lg:mr-8 font-medium rounded-3xl montserrat-font`}
                       >
                         {cartProductNotExist
                           ? "Add To Cart"
                           : "Remove From Cart"}
                       </button>
                       <button onClick={() => removeFavourite(productId)}>
-                        <CloseOutlined className="text-3xl" />
+                        <CloseOutlined className="text-xl sm:text-3xl" />
                       </button>
                     </div>
                   </li>
