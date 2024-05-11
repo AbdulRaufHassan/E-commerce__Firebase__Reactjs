@@ -5,7 +5,7 @@ import LOGO from "../assets/images/logo.png";
 import ADD_PRODUCT_ICON from "../assets/images/add_product_icon.png";
 import AddCategoryModal from "./AddCategoryModal";
 import Add_UpdateProductModal from "./Add_UpdateProductModal";
-function Header({ openModal, setOpenModal }) {
+function Header({ openModal, setOpenModal, editProductId, setEditProductId }) {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   return (
     <>
@@ -27,7 +27,10 @@ function Header({ openModal, setOpenModal }) {
             </button>
             <button
               className="mx-6 flex flex-col items-center"
-              onClick={() => setOpenModal(true)}
+              onClick={() => {
+                setEditProductId(null);
+                setOpenModal(true);
+              }}
             >
               <img src={ADD_PRODUCT_ICON} className="h-[30px]" />
               <span className="text-xs mt-1 ubuntu-font">Add Product</span>
@@ -42,7 +45,8 @@ function Header({ openModal, setOpenModal }) {
       {openModal && (
         <Add_UpdateProductModal
           openModal={openModal}
-          modalType="Add"
+          editProductId={editProductId}
+          setEditProductId={setEditProductId}
           setOpenModal={setOpenModal}
         />
       )}

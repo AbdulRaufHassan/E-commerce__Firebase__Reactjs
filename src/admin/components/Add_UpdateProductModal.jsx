@@ -18,10 +18,23 @@ import {
 } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
 import { topCollectionDocId } from "../../constants";
-import { allCategoriesContext } from "../../context/index.js";
+import {
+  allCategoriesContext,
+  allProductsContext,
+} from "../../context/index.js";
 
-function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
-  const { allCategories } = useContext(allCategoriesContext);
+function Add_UpdateProductModal({
+  openModal,
+  setOpenModal,
+  editProductId,
+  setEditProductId,
+}) {
+  // ===> When a null is received in the editProductId prop,
+  // it means the modal is open for adding a new product.
+  // And if it's not null but contains an ID,
+  //  it means the modal is open for editing a product. <===
+
+  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const [productNameInput, setProductNameInput] = useState("");
   const [productDisInput, setProductDisInput] = useState("");
   const [productPriceInput, setProductPriceInput] = useState("");
@@ -29,8 +42,11 @@ function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
   const [categoryInput, setCategoryInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const allProducts = useContext(allProductsContext);
+  const [editProduct, setEditProduct] = useState(null);
 
   const closeModal = () => {
+    setEditProductId(null);
     setProductNameInput("");
     setProductDisInput("");
     setProductPriceInput("");
@@ -91,12 +107,28 @@ function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
   ];
 
   useEffect(() => {
-    setCategories(allCategories);
+    if (editProductId) {
+      const findProduct = allProducts.find(
+        (product) => product.productId == editProductId
+      );
+      const categoryName =
+        topCollectionDoc.categoryId == findProduct.category
+          ? topCollectionDoc.name
+          : allCategories.find(
+              (category) => category.categoryId == findProduct.category
+            );
+      setProductNameInput(findProduct.name);
+      setProductDisInput(findProduct.discription);
+      setProductPriceInput(findProduct.price);
+      setCategoryInput(categoryName);
+    } else {
+      setCategories(allCategories);
+    }
   }, [allCategories]);
 
   return (
     <Modal
-      title={modalType == "Add" ? "Add Product" : "Update Product"}
+      title={editProductId == null ? "Add Product" : "Update Product"}
       open={openModal}
       centered
       maskClosable={false}
@@ -130,6 +162,7 @@ function Add_UpdateProductModal({ openModal, setOpenModal, modalType }) {
             Select Category
             <Select
               showSearch
+              value={categoryInput}
               filterOption={(input, option) =>
                 (option?.label ?? "")
                   .toLowerCase()

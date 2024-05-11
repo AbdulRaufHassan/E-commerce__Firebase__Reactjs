@@ -37,17 +37,17 @@ function CategoryProducts() {
     <div className="min-h-screen max-h-fit w-full relative">
       <Header />
       <main>
-        <div className="h-[100px] sm:h-[150px] md:h-[150px] lg:h-[88px] w-full"></div>
-        <div
-          className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center"
-        >
+        <div className="h-[124px] sm:h-[156px] md:h-[156px] lg:h-[88px] w-full"></div>
+        <div className="h-[150px] md:h-52 w-full bg-slate-800 flex flex-col justify-center items-center">
           <h6 className="text-gray-400 mb-2">Category</h6>
-          <h1 className="text-6xl montserrat-font text-white font-bold">
+          <h1 className="text-4xl md:text-6xl montserrat-font text-white font-bold">
             {currentCategory?.name}
           </h1>
         </div>
-        <h6 className="ml-4 mb-4 mt-10 montserrat-font text-2xl text-gray-500 font-semibold">
-          {allCategoryProducts.length} items
+        <h6 className="ml-4 mb-4 mt-10 montserrat-font text-xl sm:text-2xl text-gray-500 font-semibold">
+          {allCategoryProducts.length == 1
+            ? `${allCategoryProducts.length} item`
+            : `${allCategoryProducts.length} items`}
         </h6>
         <ShowProducts
           products={allCategoryProducts}

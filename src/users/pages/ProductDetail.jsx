@@ -61,18 +61,18 @@ function ProductDetail() {
               />
             </div>
             <div className="flex flex-col product_info_div ml-9">
-              <h1 className="text-4xl montserrat-font font-semibold text-black">
+              <h1 className="text-3xl sm:text-4xl montserrat-font font-semibold text-black">
                 {product.name}
               </h1>
               <div className="flex justify-between items-center mt-4 mb-3">
-                <h6 className="text-2xl ubunti-font font-bold text-gray-600">
+                <h6 className="text-xl sm:text-2xl ubunti-font font-bold text-gray-600">
                   RS {product.price}
                 </h6>
                 <h6 className=" montserrat-font flex items-center">
                   <span className="text-gray-400 font-medium text-sm mr-2">
                     Category:
                   </span>
-                  <span className="text-gray-600 font-semibold flex items-center text-base">
+                  <span className="text-gray-600 font-semibold flex items-center text-sm sm:text-base">
                     {product.category == topCollectionDoc.categoryId
                       ? topCollectionDoc.name
                       : allCategories.find(
@@ -82,8 +82,7 @@ function ProductDetail() {
                 </h6>
               </div>
               <p
-                className="montserrat-font text-gray-400"
-                style={{ fontSize: "15px" }}
+                className="montserrat-font text-gray-400 text-sm sm:text-[15px]"
               >
                 {product.discription}
               </p>

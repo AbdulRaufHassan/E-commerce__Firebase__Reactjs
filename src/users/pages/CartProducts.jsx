@@ -91,16 +91,16 @@ function CartProducts() {
     <div className="w-full min-h-screen max-h-fit relative flex flex-col">
       <Header />
       <main className="flex flex-col flex-1">
-        <div className="h-[100px] sm:h-[150px] md:h-[150px] lg:h-[88px] w-full"></div>
-        <div className="h-52 w-full bg-slate-800 flex flex-col justify-center items-center">
-          <h1 className="text-6xl montserrat-font text-white font-bold">
+        <div className="h-[124px] sm:h-[156px] md:h-[156px] lg:h-[88px] w-full"></div>
+        <div className="h-[150px] md:h-52 w-full bg-slate-800 flex flex-col justify-center items-center">
+          <h1 className="text-4xl md:text-6xl montserrat-font text-white font-bold">
             Cart List
           </h1>
         </div>
         {cartProducts.length > 0 ? (
           <div className="flex h-auto justify-between flex-col-reverse lg:flex-row w-full mb-24">
             <div className="h-auto mx-2 md:mx-4 w-[calc(100%-16px)] md:w-[calc(100%-32px)] lg:w-[65%]">
-              <h6 className="mx-4 mt-10 mb-4 montserrat-font text-2xl text-gray-500 font-semibold">
+              <h6 className="mx-4 mt-10 mb-4 montserrat-font text-xl sm:text-2xl text-gray-500 font-semibold">
                 {cartProducts.length == 1
                   ? `${cartProducts.length} item`
                   : `${cartProducts.length} items`}
@@ -166,7 +166,7 @@ function CartProducts() {
               </ul>
             </div>
             <div
-              className="h-fit w-[300px] lg:w-[30%] ml-4 lg:ml-0 bg-white mr-4 mt-10 p-4 box-border flex flex-col"
+              className="h-fit w-[300px] sm:w-[400px] lg:w-[30%] ml-4 lg:ml-0 bg-white mr-4 mt-10 p-4 box-border flex flex-col"
               style={{
                 boxShadow:
                   "rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px",

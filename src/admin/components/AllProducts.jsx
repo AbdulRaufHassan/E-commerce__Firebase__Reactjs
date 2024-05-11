@@ -1,13 +1,13 @@
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import React, { useContext } from "react";
 import "../css/dashboard.css";
 import {
   allProductsContext,
   allCategoriesContext,
 } from "../../context/index.js";
-import { DeleteFilled, EditFilled } from "@ant-design/icons";
+import { DeleteFilled, EditFilled, LoadingOutlined } from "@ant-design/icons";
 
-function AllProducts({ openModal, setOpenModal }) {
+function AllProducts({ setOpenModal, setEditProductId }) {
   const allProducts = useContext(allProductsContext);
   const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
   const tableHead = [
@@ -15,7 +15,7 @@ function AllProducts({ openModal, setOpenModal }) {
       title: "S.No",
       dataIndex: "no",
       key: "no",
-      width: 50,
+      width: 70,
       align: "center",
     },
     ,
@@ -70,11 +70,25 @@ function AllProducts({ openModal, setOpenModal }) {
     },
   ];
 
-  return (
-    allProducts.length > 0 && (
+  return allProducts.length < 1 ? (
+    <div className="flex justify-center w-full mt-10">
+      <Spin
+        indicator={
+          <LoadingOutlined
+            style={{
+              fontSize: 60,
+              color: "black",
+            }}
+            spin
+          />
+        }
+      />
+    </div>
+  ) : (
+    <>
       <Table
         pagination={false}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content", y: "calc(100vh - 180px)" }}
         columns={tableHead}
         dataSource={allProducts.map(
           (
@@ -111,7 +125,13 @@ function AllProducts({ openModal, setOpenModal }) {
               date: timeStamp?.toDate()?.toDateString(),
               actions: (
                 <div className="w-full flex justify-around">
-                  <button className="flex flex-col items-center text-blue-950">
+                  <button
+                    className="flex flex-col items-center text-blue-950"
+                    onClick={() => {
+                      setEditProductId(productId);
+                      setOpenModal(true);
+                    }}
+                  >
                     <EditFilled className="text-2xl mb-1" />
                     <span className="text-base montserrat-font">Edit</span>
                   </button>
@@ -125,7 +145,7 @@ function AllProducts({ openModal, setOpenModal }) {
           }
         )}
       />
-    )
+    </>
   );
 }
 

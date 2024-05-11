@@ -43,6 +43,7 @@ function AllUsers() {
   ) : (
     <Table
       pagination={false}
+      scroll={{ x: "max-content", y: "calc(100vh - 180px)" }}
       columns={[
         {
           title: "S.No",
