@@ -17,7 +17,7 @@ import {
 } from "./config";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { adminEmail, topCollectionDocId } from "./constants/index.js";
+import { adminEmail } from "./constants/index.js";
 import {
   allProductsContext,
   allCategoriesContext,
@@ -33,7 +33,6 @@ function App() {
   const [userAuthenticated, setUserAuthenticated] = useState(null);
   const [allProducts, setAllProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
-  const [topCollectionDoc, setTopCollectionDoc] = useState(null);
   const [currentUserData, setCurrentUserData] = useState(null);
 
   const getAllProducts = () => {
@@ -74,22 +73,11 @@ function App() {
     }
   };
 
-  const getTopCollectionDoc = () => {
-    try {
-      onSnapshot(doc(db, "topCollections", topCollectionDocId), (doc) => {
-        setTopCollectionDoc(doc.data());
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
     if (userAuthenticated?.uid) {
       getCurrentUserDoc();
       getAllProducts();
       getAllCategories();
-      getTopCollectionDoc();
     }
   }, [userAuthenticated]);
 
@@ -125,9 +113,7 @@ function App() {
         value={{ currentUserData, setCurrentUserData }}
       >
         <allProductsContext.Provider value={allProducts}>
-          <allCategoriesContext.Provider
-            value={{ allCategories, topCollectionDoc }}
-          >
+          <allCategoriesContext.Provider value={{ allCategories }}>
             <CartItemToggleProvider>
               <Routes>
                 <Route

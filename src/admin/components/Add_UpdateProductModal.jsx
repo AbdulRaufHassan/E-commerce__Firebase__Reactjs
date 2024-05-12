@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "../css/dashboard.css";
 import { Modal, Select, Spin } from "antd";
 import {
+  arrayRemove,
   arrayUnion,
   collection,
   db,
@@ -17,7 +18,6 @@ import {
   uploadBytes,
 } from "../../config";
 import { LoadingOutlined } from "@ant-design/icons";
-import { topCollectionDocId } from "../../constants";
 import {
   allCategoriesContext,
   allProductsContext,
@@ -34,7 +34,7 @@ function Add_UpdateProductModal({
   // And if it's not null but contains an ID,
   //  it means the modal is open for editing a product. <===
 
-  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const [productNameInput, setProductNameInput] = useState("");
   const [productDisInput, setProductDisInput] = useState("");
   const [productPriceInput, setProductPriceInput] = useState("");
@@ -47,6 +47,7 @@ function Add_UpdateProductModal({
 
   const closeModal = () => {
     setEditProductId(null);
+    setEditProduct(null);
     setProductNameInput("");
     setProductDisInput("");
     setProductPriceInput("");
@@ -72,59 +73,83 @@ function Add_UpdateProductModal({
         timeStamp: serverTimestamp(),
         category: categoryInput,
       });
-      if (categoryInput !== topCollectionDocId) {
-        const categoryRef = doc(db, "categories", categoryInput);
-        await updateDoc(categoryRef, {
-          products: arrayUnion(productsRef.id),
-        });
-      } else {
-        const topCollectionRef = doc(db, "topCollections", topCollectionDocId);
-        const topCollectionSnapshot = await getDoc(topCollectionRef);
-        if (!topCollectionSnapshot.exists()) {
-          await setDoc(topCollectionRef, {
-            name: "Top Collection",
-            categoryId: topCollectionDocId,
-            products: [productsRef.id],
-          });
-        } else {
-          await updateDoc(topCollectionRef, {
-            products: arrayUnion(productsRef.id),
-          });
-        }
-      }
+      const categoryRef = doc(db, "categories", categoryInput);
+      await updateDoc(categoryRef, {
+        products: arrayUnion(productsRef.id),
+      });
       closeModal();
     } catch (e) {
       console.log(e);
     }
   };
 
-  const options = [
-    { value: topCollectionDocId, label: "Top Collection" },
-    ...categories.map((category) => ({
-      value: category.categoryId,
-      label: category.name,
-    })),
-  ];
+  const updateProduct = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const prevCategoryRef = doc(
+        db,
+        "categories",
+        editProduct?.category?.categoryId
+      );
+      await updateDoc(prevCategoryRef, {
+        products: arrayRemove(editProductId),
+      });
+      const productRef = doc(db, "products", editProductId);
+      if (productInputFile) {
+        const storageRef = ref(storage, `products/${editProductId}`);
+        const snapshot = await uploadBytes(storageRef, editProduct.imageUrl);
+        const imageUrl = await getDownloadURL(snapshot.ref);
+        await updateDoc(productRef, {
+          name: productNameInput.trim(),
+          discription: productDisInput.trim(),
+          imgUrl: imageUrl,
+          price: productPriceInput.trim(),
+          timeStamp: serverTimestamp(),
+          category: categoryInput,
+        });
+      } else {
+        await updateDoc(productRef, {
+          name: productNameInput.trim(),
+          discription: productDisInput.trim(),
+          price: productPriceInput.trim(),
+          timeStamp: serverTimestamp(),
+          category: categoryInput,
+        });
+      }
+      const categoryRef = doc(db, "categories", categoryInput);
+      await updateDoc(categoryRef, {
+        products: arrayUnion(productRef.id),
+      });
+      closeModal();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const options = categories.map((category) => ({
+    value: category.categoryId,
+    label: category.name,
+  }));
 
   useEffect(() => {
     if (editProductId) {
       const findProduct = allProducts.find(
         (product) => product.productId == editProductId
       );
-      const categoryName =
-        topCollectionDoc.categoryId == findProduct.category
-          ? topCollectionDoc.name
-          : allCategories.find(
-              (category) => category.categoryId == findProduct.category
-            );
-      setProductNameInput(findProduct.name);
-      setProductDisInput(findProduct.discription);
-      setProductPriceInput(findProduct.price);
-      setCategoryInput(categoryName);
-    } else {
-      setCategories(allCategories);
+      if (findProduct) {
+        const category = allCategories.find(
+          (category) => category.categoryId == findProduct.category
+        );
+        setEditProduct({ ...findProduct, category });
+        setProductNameInput(findProduct.name);
+        setProductDisInput(findProduct.discription);
+        setProductPriceInput(findProduct.price);
+        setCategoryInput(category.categoryId);
+      }
     }
-  }, [allCategories]);
+    setCategories(allCategories);
+  }, [allCategories, allProducts, editProductId]);
 
   return (
     <Modal
@@ -135,7 +160,10 @@ function Add_UpdateProductModal({
       onCancel={closeModal}
       footer={null}
     >
-      <form onSubmit={addProduct} className="mt-6">
+      <form
+        onSubmit={!editProductId && !editProduct ? addProduct : updateProduct}
+        className="mt-6"
+      >
         <div>
           <label className="montserrat-font text-sm font-medium text-gray-600">
             Product Name
@@ -162,7 +190,10 @@ function Add_UpdateProductModal({
             Select Category
             <Select
               showSearch
-              value={categoryInput}
+              defaultValue={{
+                value: editProduct?.category?.categoryId,
+                label: editProduct?.category?.name,
+              }}
               filterOption={(input, option) =>
                 (option?.label ?? "")
                   .toLowerCase()
@@ -184,19 +215,24 @@ function Add_UpdateProductModal({
             />
           </label>
         </div>
-        <div className="mt-5 w-full flex flex-col">
-          <label
-            htmlFor="productImg"
-            className="montserrat-font text-sm font-medium text-gray-600 w-fit"
-          >
-            Choose Image
-          </label>
-          <input
-            id="productImg"
-            type="file"
-            className="mt-2 w-fit"
-            onChange={(e) => setProductInputFile(e.target.files[0])}
-          />
+        <div className="mt-5 w-full flex items-center">
+          {editProductId && editProduct && !productInputFile && (
+            <img src={editProduct.imgUrl} className="h-24 w-20 bg-cover mr-4" />
+          )}
+          <div className="w-full flex flex-col">
+            <label
+              htmlFor="productImg"
+              className="montserrat-font text-sm font-medium text-gray-600 w-fit"
+            >
+              Choose Image
+            </label>
+            <input
+              id="productImg"
+              type="file"
+              className="mt-2 w-fit"
+              onChange={(e) => setProductInputFile(e.target.files[0])}
+            />
+          </div>
         </div>
         <div className="w-full flex items-center justify-end mt-8">
           <button
@@ -212,8 +248,7 @@ function Add_UpdateProductModal({
               !productNameInput.trim() ||
               !productDisInput.trim() ||
               !categoryInput ||
-              !productPriceInput.trim() ||
-              !productInputFile
+              !productPriceInput.trim()
             }
             type="submit"
             className="w-28 h-12 bg-teal-500 text-white rounded-lg text-xl ubuntu-font"
@@ -230,8 +265,10 @@ function Add_UpdateProductModal({
                   />
                 }
               />
-            ) : (
+            ) : !editProductId ? (
               "Add"
+            ) : (
+              "Update"
             )}
           </button>
         </div>

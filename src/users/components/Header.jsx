@@ -53,7 +53,7 @@ function Header() {
           >
             <HeartOutlined className="text-2xl sm:text-3xl" />
             <span className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px] flex items-center justify-center bg-white rounded-full text-xs absolute top-[-5px] right-[-10px] sm:right-[-12px]">
-              {currentUserData?.favouriteItems?.length}
+              {currentUserData?.favouriteItems?.length || 0}
             </span>
           </button>
           <button

@@ -1,15 +1,30 @@
-import { Spin, Table } from "antd";
+import { Popconfirm, Spin, Table } from "antd";
 import React, { useContext } from "react";
 import "../css/dashboard.css";
 import {
   allProductsContext,
   allCategoriesContext,
 } from "../../context/index.js";
-import { DeleteFilled, EditFilled, LoadingOutlined } from "@ant-design/icons";
+import {
+  DeleteFilled,
+  EditFilled,
+  LoadingOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+import {
+  arrayRemove,
+  collection,
+  db,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+  writeBatch,
+} from "../../config/index.js";
 
 function AllProducts({ setOpenModal, setEditProductId }) {
   const allProducts = useContext(allProductsContext);
-  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const tableHead = [
     {
       title: "S.No",
@@ -70,6 +85,31 @@ function AllProducts({ setOpenModal, setEditProductId }) {
     },
   ];
 
+  const deleteProduct = async (productId, categoryId) => {
+    try {
+      const userDocsRef = collection(db, "users");
+      const batch = writeBatch(db);
+      const userDocsSnapshot = await getDocs(userDocsRef);
+      userDocsSnapshot.forEach((userDoc) => {
+        const updatedCartItems = userDoc
+          .data()
+          .cartItems.filter((item) => item.productId != productId);
+        batch.update(userDoc.ref, {
+          favouriteItems: arrayRemove(productId),
+          cartItems: updatedCartItems,
+        });
+      });
+      await batch.commit();
+      const categoryRef = doc(db, "categories", categoryId);
+      await updateDoc(categoryRef, {
+        products: arrayRemove(productId),
+      });
+      await deleteDoc(doc(db, "products", productId));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return allProducts.length < 1 ? (
     <div className="flex justify-center w-full mt-10">
       <Spin
@@ -103,17 +143,16 @@ function AllProducts({ setOpenModal, setEditProductId }) {
             },
             index
           ) => {
-            const categoryName =
-              category == topCollectionDoc.categoryId
-                ? topCollectionDoc.name
-                : allCategories.find((v) => category == v.categoryId).name;
+            const findCategory = allCategories.find(
+              (v) => category == v.categoryId
+            );
             return {
               key: productId,
               no: index + 1,
               name: name,
               discription: <p className="text-sm">{discription}</p>,
               price,
-              category: categoryName,
+              category: findCategory?.name,
               image: (
                 <div className="flex items-center justify-center h-24">
                   <img
@@ -135,10 +174,23 @@ function AllProducts({ setOpenModal, setEditProductId }) {
                     <EditFilled className="text-2xl mb-1" />
                     <span className="text-base montserrat-font">Edit</span>
                   </button>
-                  <button className="flex flex-col items-center text-red-600">
-                    <DeleteFilled className="text-2xl mb-1" />
-                    <span className="text-base montserrat-font">Delete</span>
-                  </button>
+                  <Popconfirm
+                    title="Delete Product"
+                    description="Are you sure you want to delete this product?"
+                    onConfirm={() => deleteProduct(productId, category)}
+                    icon={
+                      <QuestionCircleOutlined
+                        style={{
+                          color: "red",
+                        }}
+                      />
+                    }
+                  >
+                    <button className="flex flex-col items-center text-red-600">
+                      <DeleteFilled className="text-2xl mb-1" />
+                      <span className="text-base montserrat-font">Delete</span>
+                    </button>
+                  </Popconfirm>
                 </div>
               ),
             };

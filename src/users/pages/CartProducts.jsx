@@ -73,21 +73,7 @@ function CartProducts() {
     calculateTotal();
   });
 
-  return loading ? (
-    <div className="flex items-center justify-center min-h-screen max-h-fit w-full bg-teal-500">
-      <Spin
-        indicator={
-          <LoadingOutlined
-            style={{
-              fontSize: 60,
-              color: "black",
-            }}
-            spin
-          />
-        }
-      />
-    </div>
-  ) : (
+  return (
     <div className="w-full min-h-screen max-h-fit relative flex flex-col">
       <Header />
       <main className="flex flex-col flex-1">
@@ -97,7 +83,21 @@ function CartProducts() {
             Cart List
           </h1>
         </div>
-        {cartProducts.length > 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center w-full mt-6">
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 60,
+                    color: "black",
+                  }}
+                  spin
+                />
+              }
+            />
+          </div>
+        ) : cartProducts.length > 0 ? (
           <div className="flex h-auto justify-between flex-col-reverse lg:flex-row w-full mb-24">
             <div className="h-auto mx-2 md:mx-4 w-[calc(100%-16px)] md:w-[calc(100%-32px)] lg:w-[65%]">
               <h6 className="mx-4 mt-10 mb-4 montserrat-font text-xl sm:text-2xl text-gray-500 font-semibold">

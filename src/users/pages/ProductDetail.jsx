@@ -18,7 +18,7 @@ function ProductDetail() {
   const { productId } = useParams();
   const allProducts = useContext(allProductsContext);
   const { currentUserData } = useContext(currentUserDataContext);
-  const { allCategories, topCollectionDoc } = useContext(allCategoriesContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const [product, setProduct] = useState(null);
   const toggleFavourite = useContext(favouriteToggleContext);
   const {toggleCart} = useContext(cartItemToggleContext);
@@ -73,9 +73,7 @@ function ProductDetail() {
                     Category:
                   </span>
                   <span className="text-gray-600 font-semibold flex items-center text-sm sm:text-base">
-                    {product.category == topCollectionDoc.categoryId
-                      ? topCollectionDoc.name
-                      : allCategories.find(
+                    {allCategories.find(
                           (category) => product.category == category.categoryId
                         )?.name}
                   </span>

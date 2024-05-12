@@ -31,7 +31,7 @@ function Categories() {
                         navigate(`/category/${category.categoryId}`)
                       }
                     >
-                      <div className="rounded-full bg-gray-300 category_img_div flex justify-center items-center">
+                      <div className="rounded-full bg-teal-400 category_img_div flex justify-center items-center">
                         <img
                           src={category.imgUrl}
                           className="max-h-[80%] max-w-[80%] bg-cover"

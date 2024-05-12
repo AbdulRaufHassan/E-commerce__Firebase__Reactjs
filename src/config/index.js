@@ -12,14 +12,18 @@ import {
   doc,
   addDoc,
   collection,
-  FieldValue,
   query,
   where,
   onSnapshot,
   serverTimestamp,
   getDocs,
   updateDoc,
-  arrayUnion
+  arrayUnion,
+  arrayRemove,
+  deleteDoc,
+  limit,
+  orderBy,
+  writeBatch
 } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL,ref } from "firebase/storage";
 
@@ -52,6 +56,7 @@ export {
   collection,
   query,
   where,
+  orderBy,
   onSnapshot,
   serverTimestamp,
   storage,
@@ -59,5 +64,9 @@ export {
   getDownloadURL,
   ref,
   updateDoc,
-  arrayUnion
+  arrayUnion,
+  arrayRemove,
+  limit,
+  deleteDoc,
+  writeBatch
 };
