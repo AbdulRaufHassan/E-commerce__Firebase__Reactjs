@@ -2,40 +2,14 @@ import React from "react";
 import "./users/css/App.css";
 import LOGO from "./users/assets/images/logo.png";
 import GOOGLE_ICON from "./users/assets/images/google_icon.png";
-import {
-  GoogleAuthProvider,
-  auth,
-  db,
-  doc,
-  serverTimestamp,
-  setDoc,
-  signInWithPopup,
-} from "./config";
-import { adminEmail } from "./constants";
+import { GoogleAuthProvider, auth, signInWithPopup } from "./config";
 
 function SigninPage() {
   const googleSignin = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
-      .then(async (result) => {
-        if (result.user.email != adminEmail) {
-          await setDoc(doc(db, "users", result.user.uid), {
-            name: result.user.displayName,
-            uid: result.user.uid,
-            emailAddress: result.user.email,
-            joinDate: serverTimestamp(),
-            cartItems: [],
-            favouriteItems: [],
-          });
-        } else {
-          await setDoc(doc(db, "users", result.user.uid), {
-            name: result.user.displayName,
-            uid: result.user.uid,
-            emailAddress: result.user.email,
-            joinDate: serverTimestamp(),
-            role: "Admin",
-          });
-        }
+      .then((result) => {
+        console.log("signin successfully");
       })
       .catch((error) => {
         console.log(error);

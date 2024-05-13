@@ -23,11 +23,6 @@
 
 .categories .category:hover .category_img_div {
   box-shadow: 0 0 6px 0 black;
-  background-color: rgb(209 213 219);
-}
-
-.categories .category:hover > h6 {
-  color: rgb(0, 0, 0);
 }
 
 .hide-scroll-bar::-webkit-scrollbar {

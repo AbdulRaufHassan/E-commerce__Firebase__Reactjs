@@ -16,8 +16,11 @@ import {
   collection,
   db,
   deleteDoc,
+  deleteObject,
   doc,
   getDocs,
+  ref,
+  storage,
   updateDoc,
   writeBatch,
 } from "../../config/index.js";
@@ -105,6 +108,14 @@ function AllProducts({ setOpenModal, setEditProductId }) {
         products: arrayRemove(productId),
       });
       await deleteDoc(doc(db, "products", productId));
+      const productImgRef = ref(storage, `products/${productId}`);
+      deleteObject(productImgRef)
+        .then(() => {
+          console.log("image deleted successfully");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (e) {
       console.log(e);
     }

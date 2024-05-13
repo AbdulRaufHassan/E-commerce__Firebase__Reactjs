@@ -4,6 +4,7 @@ import {
   getAuth,
   signInWithPopup,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -23,9 +24,15 @@ import {
   deleteDoc,
   limit,
   orderBy,
-  writeBatch
+  writeBatch,
 } from "firebase/firestore";
-import { getStorage, uploadBytes, getDownloadURL,ref } from "firebase/storage";
+import {
+  getStorage,
+  uploadBytes,
+  getDownloadURL,
+  ref,
+  deleteObject,
+} from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -65,8 +72,10 @@ export {
   ref,
   updateDoc,
   arrayUnion,
+  signOut,
   arrayRemove,
   limit,
   deleteDoc,
-  writeBatch
+  writeBatch,
+  deleteObject,
 };

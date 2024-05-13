@@ -5,6 +5,7 @@ import LOGO from "../assets/images/logo.png";
 import ADD_PRODUCT_ICON from "../assets/images/add_product_icon.png";
 import AddCategoryModal from "./AddCategoryModal";
 import Add_UpdateProductModal from "./Add_UpdateProductModal";
+import { auth, signOut } from "../../config";
 function Header({ openModal, setOpenModal, editProductId, setEditProductId }) {
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   return (
@@ -35,7 +36,18 @@ function Header({ openModal, setOpenModal, editProductId, setEditProductId }) {
               <img src={ADD_PRODUCT_ICON} className="h-[30px]" />
               <span className="text-xs mt-1 ubuntu-font">Add Product</span>
             </button>
-            <button className="mr-2 flex flex-col items-center">
+            <button
+              className="mr-2 flex flex-col items-center"
+              onClick={() => {
+                signOut(auth)
+                  .then(() => {
+                    console.log("sign out successfully");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }}
+            >
               <LogoutOutlined className="text-3xl" />
               <span className="text-xs mt-1 ubuntu-font">Logout</span>
             </button>

@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../css/App.css";
-import { allProductsContext, currentUserDataContext } from "../../context";
+import {
+  allCategoriesContext,
+  allProductsContext,
+  currentUserDataContext,
+} from "../../context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +16,24 @@ import {
 } from "@ant-design/icons";
 import { cartItemToggleContext } from "../../context/CartTogglecontext";
 import { Spin } from "antd";
+import {
+  collection,
+  db,
+  doc,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "../../config";
 
 function CartProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
+  const { allCategories } = useContext(allCategoriesContext);
   const allProducts = useContext(allProductsContext);
   const [cartProducts, setCartProducts] = useState([]);
   const { toggleCart } = useContext(cartItemToggleContext);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [btnLoading, setBtnLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleProductClick = (productId) => {
@@ -32,8 +46,19 @@ function CartProducts() {
       const findItem = localStorageCart.find(
         (item) => item.productId == product.productId
       );
+      const categoryFind = allCategories.find(
+        (category) => category.categoryId == product.category
+      );
       findItem &&
-        filterProducts.push({ ...product, quantity: findItem.quantity });
+        filterProducts.push({
+          ...product,
+          category: {
+            categoryId: categoryFind.categoryId,
+            categoryName: categoryFind.name,
+            categoryImage: categoryFind.imgUrl,
+          },
+          quantity: findItem.quantity,
+        });
     });
     setCartProducts([...filterProducts]);
     setLoading(false);
@@ -64,8 +89,35 @@ function CartProducts() {
     calculateTotal();
   };
 
+  const submitOrder = async () => {
+    setBtnLoading(true);
+    let cartItems = [];
+    cartProducts.forEach((crtProduct) => {
+      cartItems.push({
+        productId: crtProduct.productId,
+        productName: crtProduct.name,
+        price: Number(crtProduct.price),
+        image: crtProduct.imgUrl,
+        quantity: crtProduct.quantity,
+        category: crtProduct.category,
+      });
+    });
+    const ordersRef = doc(collection(db, "orders"));
+    await setDoc(ordersRef, {
+      orderId: ordersRef.id,
+      userUid: currentUserData.uid,
+      userEmailAddress: currentUserData.emailAddress,
+      cartItems,
+      timeStamp: serverTimestamp(),
+    });
+    const userRef = doc(db, "users", currentUserData.uid);
+    await updateDoc(userRef, {
+      cartItems: [],
+    });
+    setBtnLoading(false);
+  };
+
   useEffect(() => {
-    setLoading(true);
     getAndSetCartItems(JSON.parse(localStorage.getItem("cartItems")));
   }, [currentUserData]);
 
@@ -83,8 +135,8 @@ function CartProducts() {
             Cart List
           </h1>
         </div>
-        {loading ? (
-          <div className="flex items-center justify-center w-full mt-6">
+        {!currentUserData || loading ? (
+          <div className="flex items-center justify-center w-full mt-11">
             <Spin
               indicator={
                 <LoadingOutlined
@@ -176,8 +228,26 @@ function CartProducts() {
                 <h1 className="text-gray-500 text-2xl font-semibold">Total</h1>
                 <h1 className="text-black text-2xl">{total}</h1>
               </div>
-              <button className="w-full h-12 bg-teal-500 text-white text-lg font-medium rounded-lg mt-6 montserrat-font">
-                Buy Now
+              <button
+                disabled={btnLoading}
+                className="w-full h-12 bg-teal-500 text-white text-lg font-medium rounded-lg mt-6 montserrat-font"
+                onClick={submitOrder}
+              >
+                {btnLoading ? (
+                  <Spin
+                    indicator={
+                      <LoadingOutlined
+                        style={{
+                          fontSize: 30,
+                          color: "white",
+                        }}
+                        spin
+                      />
+                    }
+                  />
+                ) : (
+                  "Buy Now"
+                )}
               </button>
             </div>
           </div>

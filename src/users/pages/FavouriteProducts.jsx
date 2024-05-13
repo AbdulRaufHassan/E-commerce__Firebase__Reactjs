@@ -4,11 +4,12 @@ import { allProductsContext, currentUserDataContext } from "../../context";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import { favouriteToggleContext } from "../../context/FavouriteToggleContext";
 import { cartItemToggleContext } from "../../context/CartTogglecontext";
 import ADD_TO_CART from "../assets/images/add_to_cart_icon.png";
 import REMOVE_FROM_CART from "../assets/images/remove_from_cart_icon.png";
+import { Spin } from "antd";
 
 function FavouriteProducts() {
   const { currentUserData } = useContext(currentUserDataContext);
@@ -17,6 +18,7 @@ function FavouriteProducts() {
   const [favouriteProducts, setFavouriteProducts] = useState([]);
   const removeFavourite = useContext(favouriteToggleContext);
   const { toggleCart } = useContext(cartItemToggleContext);
+  const [loading, setLoading] = useState(true);
 
   const handleProductClick = (productId) => {
     navigate(`/productDetail/${productId}`);
@@ -27,6 +29,7 @@ function FavouriteProducts() {
       currentUserData?.favouriteItems.includes(product.productId)
     );
     setFavouriteProducts(filterProducts);
+    setLoading(false);
   }, [currentUserData, allProducts]);
   return (
     <div className="w-full min-h-screen max-h-fit relative flex flex-col">
@@ -38,7 +41,21 @@ function FavouriteProducts() {
             Favourite List
           </h1>
         </div>
-        {favouriteProducts.length > 0 ? (
+        {!currentUserData || loading ? (
+          <div className="flex items-center justify-center w-full mt-11">
+            <Spin
+              indicator={
+                <LoadingOutlined
+                  style={{
+                    fontSize: 60,
+                    color: "black",
+                  }}
+                  spin
+                />
+              }
+            />
+          </div>
+        ) : currentUserData && favouriteProducts.length > 0 ? (
           <>
             <h6 className="ml-4 mb-4 mt-10 montserrat-font text-xl sm:text-2xl text-gray-500 font-semibold">
               {favouriteProducts.length == 1
@@ -114,9 +131,11 @@ function FavouriteProducts() {
             </ul>
           </>
         ) : (
-          <div className="mb-16 w-full flex justify-center items-center flex-1 montserrat-font text-2xl">
-            <h1>No favourite products yet!</h1>
-          </div>
+          currentUserData && (
+            <div className="mb-16 w-full flex justify-center items-center flex-1 montserrat-font text-2xl">
+              <h1>No favourite products yet!</h1>
+            </div>
+          )
         )}
       </main>
       <Footer />
