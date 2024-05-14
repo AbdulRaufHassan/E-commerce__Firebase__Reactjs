@@ -108,6 +108,7 @@ function CartProducts() {
       userUid: currentUserData.uid,
       userEmailAddress: currentUserData.emailAddress,
       cartItems,
+      totalPrice: total,
       timeStamp: serverTimestamp(),
     });
     const userRef = doc(db, "users", currentUserData.uid);

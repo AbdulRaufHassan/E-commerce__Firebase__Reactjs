@@ -96,9 +96,9 @@ function Add_UpdateProductModal({
         products: arrayRemove(editProductId),
       });
       const productRef = doc(db, "products", editProductId);
-      if (productInputFile) {
+      if (productInputFile != null) {
         const storageRef = ref(storage, `products/${editProductId}`);
-        const snapshot = await uploadBytes(storageRef, editProduct.imageUrl);
+        const snapshot = await uploadBytes(storageRef, productInputFile);
         const imageUrl = await getDownloadURL(snapshot.ref);
         await updateDoc(productRef, {
           name: productNameInput.trim(),
@@ -137,6 +137,7 @@ function Add_UpdateProductModal({
       const findProduct = allProducts.find(
         (product) => product.productId == editProductId
       );
+      setCategoryInput(findProduct.category);
       if (findProduct) {
         const category = allCategories.find(
           (category) => category.categoryId == findProduct.category
@@ -145,7 +146,7 @@ function Add_UpdateProductModal({
         setProductNameInput(findProduct.name);
         setProductDisInput(findProduct.discription);
         setProductPriceInput(findProduct.price);
-        setCategoryInput(category.categoryId);
+        setProductInputFile(findProduct.imageUrl);
       }
     }
     setCategories(allCategories);
@@ -190,10 +191,7 @@ function Add_UpdateProductModal({
             Select Category
             <Select
               showSearch
-              defaultValue={{
-                value: editProduct?.category?.categoryId,
-                label: editProduct?.category?.name,
-              }}
+              value={categoryInput}
               filterOption={(input, option) =>
                 (option?.label ?? "")
                   .toLowerCase()

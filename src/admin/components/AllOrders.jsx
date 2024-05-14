@@ -64,6 +64,12 @@ function AllOrders() {
       width: 130,
     },
     {
+      title: "Total Price",
+      key: "totalPrice",
+      dataIndex: "totalPrice",
+      width: 130,
+    },
+    {
       title: "Cart Items",
       key: "cartItems",
       dataIndex: "cartItems",
@@ -72,6 +78,7 @@ function AllOrders() {
       className: "removePadding",
     },
   ];
+
   return loading ? (
     <div className="flex justify-center w-full mt-10">
       <Spin
@@ -136,6 +143,7 @@ function AllOrders() {
               })}
             </div>
           ),
+          totalPrice: order.totalPrice
         };
       })}
     /> : <div className="flex items-center justify-center text-2xl montserrat-font mt-11">No Orders Yet!</div>

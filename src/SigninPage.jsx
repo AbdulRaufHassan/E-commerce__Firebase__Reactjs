@@ -18,7 +18,7 @@ function SigninPage() {
   return (
     <div className="bg-teal-500 min-h-screen max-h-fit flex items-center justify-center">
       <div className="flex flex-col items-center">
-        <img src={LOGO} className="h-44 md:h-64" />
+        <img src={LOGO} className="h-44 md:h-60" />
         <button
           onClick={googleSignin}
           className="mt-6 flex items-center justify-center bg-white px-4 py-2 box-border rounded-lg"

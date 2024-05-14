@@ -94,13 +94,14 @@ function AllProducts({ setOpenModal, setEditProductId }) {
       const batch = writeBatch(db);
       const userDocsSnapshot = await getDocs(userDocsRef);
       userDocsSnapshot.forEach((userDoc) => {
-        const updatedCartItems = userDoc
-          .data()
-          .cartItems.filter((item) => item.productId != productId);
-        batch.update(userDoc.ref, {
-          favouriteItems: arrayRemove(productId),
-          cartItems: updatedCartItems,
-        });
+        const userData = userDoc.data();
+        if (userData && userData.cartItems) {
+          const updatedCartItems = userData.cartItems.filter((item) => item.productId != productId);
+          batch.update(userDoc.ref, {
+            favouriteItems: arrayRemove(productId),
+            cartItems: updatedCartItems,
+          });
+        }
       });
       await batch.commit();
       const categoryRef = doc(db, "categories", categoryId);
@@ -109,13 +110,7 @@ function AllProducts({ setOpenModal, setEditProductId }) {
       });
       await deleteDoc(doc(db, "products", productId));
       const productImgRef = ref(storage, `products/${productId}`);
-      deleteObject(productImgRef)
-        .then(() => {
-          console.log("image deleted successfully");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await deleteObject(productImgRef);
     } catch (e) {
       console.log(e);
     }

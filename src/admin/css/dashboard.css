@@ -112,3 +112,7 @@ button:disabled {
 .removePadding{
   padding: 0px !important;
 }
+
+.ant-popover .ant-popover-inner{
+  margin-right: 50px !important;
+}

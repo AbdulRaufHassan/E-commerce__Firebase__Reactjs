@@ -65,7 +65,7 @@ function Header() {
             <div
               className={`absolute hide-scroll-bar p-2 pb-0 ${
                 searchProducts.length > 1 ? "xl:py-2" : "xl:pt-2"
-              } box-border top-[70px] left-1/2 transform -translate-x-1/2 right-2/4 min-h-fit max-h-[300px] w-full lg:w-[75%] bg-white z-50 rounded-xl overflow-auto`}
+              } box-border top-[53px] sm:top-[70px] left-1/2 transform -translate-x-1/2 right-2/4 min-h-fit max-h-[300px] w-full lg:w-[75%] bg-white z-50 rounded-xl overflow-auto`}
               style={{
                 boxShadow:
                   "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px",
@@ -87,7 +87,7 @@ function Header() {
                         navigate(`/productDetail/${product.productId}`)
                       }
                     >
-                      <div className="w-[70px] h-20 flex items-center justify-center">
+                      <div className="w-[60px] h-16 sm:w-[70px] sm:h-20 flex items-center justify-center">
                         <img
                           src={product.imgUrl}
                           className="max-w-full max-h-full bg-cover"
@@ -97,7 +97,7 @@ function Header() {
                         <h4 className="montserrat-font font-semibold text-base sm:text-lg">
                           {product.name}
                         </h4>
-                        <h5 className="ubuntu-font text-gray-500 text-base">
+                        <h5 className="ubuntu-font text-gray-500 text-sm sm:text-base">
                           RS {product.price}
                         </h5>
                       </div>
