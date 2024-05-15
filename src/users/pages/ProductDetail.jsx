@@ -57,7 +57,7 @@ function ProductDetail() {
             <div className="bg-gray-300 product_img_div flex items-center justify-center overflow-hidden">
               <img
                 src={product.imgUrl}
-                className="max-w-full max-h-full bg-cover"
+                className="max-w-[98%] max-h-[98%] bg-cover"
               />
             </div>
             <div className="flex flex-col product_info_div ml-9">

@@ -215,7 +215,7 @@ function Add_UpdateProductModal({
         </div>
         <div className="mt-5 w-full flex items-center">
           {editProductId && editProduct && !productInputFile && (
-            <img src={editProduct.imgUrl} className="h-24 w-20 bg-cover mr-4" />
+            <img src={editProduct.imgUrl} className="h-24 w-20 bg-contain mr-4" />
           )}
           <div className="w-full flex flex-col">
             <label

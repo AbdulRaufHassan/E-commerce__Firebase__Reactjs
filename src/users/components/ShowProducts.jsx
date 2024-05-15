@@ -31,7 +31,7 @@ function ShowProducts({ products, onClickFunc }) {
             </div>
             <div className="w-full flex-1 flex flex-col justify-start p-3 box-border">
               <h6
-                className="montserrat-font flex-1 flex items-center font-bold text-2xl mt-2 w-full cursor-pointer"
+                className="montserrat-font capitalize flex-1 flex items-center font-bold text-2xl mt-2 w-full cursor-pointer"
                 onClick={() => onClickFunc(productId)}
               >
                 {name}
