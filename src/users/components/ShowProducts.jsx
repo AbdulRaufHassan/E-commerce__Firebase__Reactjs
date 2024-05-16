@@ -21,10 +21,10 @@ function ShowProducts({ products, onClickFunc }) {
         return (
           <li
             key={productId}
-            className="flex flex-col items-center min-w-[300px] max-w-[300px] h-auto rounded-2xl bg-white box-border m-2 overflow-hidden single_product"
+            className="flex flex-col items-center min-w-[340px] max-w-[340px] sm:min-w-[310px] sm:max-w-[310px] h-auto rounded-2xl bg-white box-border m-2 overflow-hidden single_product"
           >
             <div
-              className="w-full h-auto px-2 py-6 cursor-pointer bg-gray-300 flex items-center justify-center product_img_div"
+              className="min-w-full max-w-full h-auto px-2 py-6 cursor-pointer bg-gray-300 flex items-center justify-center product_img_div"
               onClick={() => onClickFunc(productId)}
             >
               <img src={imgUrl} className="h-52 bg-cover" />
